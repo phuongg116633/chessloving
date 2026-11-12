@@ -11,6 +11,11 @@
   /* ---------- progress (per-viewer convenience) ---------- */
   let progress = {};
   try { progress = JSON.parse(localStorage.getItem('cvtb-progress') || '{}') || {}; } catch (e) { progress = {}; }
+  // display options: square names and piece names on the board (on by default for beginners)
+  let opts = { sqNames: true, pieceNames: true };
+  try { Object.assign(opts, JSON.parse(localStorage.getItem('cvtb-opts') || '{}')); } catch (e) { /* ignore */ }
+  const saveOpts = () => { try { localStorage.setItem('cvtb-opts', JSON.stringify(opts)); } catch (e) { /* ignore */ } };
+  const LETTER = { k: 'K', q: 'Q', r: 'R', b: 'B', n: 'N', p: 'P' };
   const saveProgress = () => { try { localStorage.setItem('cvtb-progress', JSON.stringify(progress)); } catch (e) { /* ignore */ } };
   const isDone = (lv, si) => !!progress[lv + '-' + si];
   const levelDone = (L) => L.steps.filter((_, i) => isDone(L.id, i)).length;
@@ -174,16 +179,22 @@
       if (targets.includes(i)) cls += p ? ' cap' : ' tgt';
       if (drag && drag.from === i && drag.moved) cls += ' lift';
       let inner = '';
-      if (c === 0) inner += `<span class="co rk">${8 - r}</span>`;
-      if (r === 7) inner += `<span class="co fl">${'abcdefgh'[c]}</span>`;
+      if (opts.sqNames) inner += `<span class="sqn${p ? ' corner' : ''}">${E.sqName(i)}</span>`;
+      else {
+        if (c === 0) inner += `<span class="co rk">${8 - r}</span>`;
+        if (r === 7) inner += `<span class="co fl">${'abcdefgh'[c]}</span>`;
+      }
       if (S.stars.has(i)) inner += STAR;
       if (p) inner += pieceHTML(p);
+      if (p && opts.pieceNames) inner += `<span class="pnm ${p < 'a' ? 'w' : 'b'}">${E.NAME[p.toLowerCase()]}<b>${LETTER[p.toLowerCase()]}</b></span><span class="pl ${p < 'a' ? 'w' : 'b'}">${LETTER[p.toLowerCase()]}</span>`;
       h += `<div class="${cls}" data-sq="${i}">${inner}</div>`;
     }
     h += arrowsSVG();
     board.innerHTML = h;
     board.classList.toggle('locked', !interactive());
     board.classList.toggle('celebrate', !!S.celebrate);
+    board.classList.toggle('named', opts.pieceNames);
+    for (const [id, on] of [['t-sq', opts.sqNames], ['t-pc', opts.pieceNames]]) { const t = $('#' + id); t.setAttribute('aria-pressed', on ? 'true' : 'false'); }
     $('#boardwrap').classList.toggle('noeval', S.step.type !== 'game' || !!S.step.goal && S.step.goal !== 'win');
   }
   function arrowsSVG() {
@@ -662,6 +673,10 @@
       else if (id === 'b-reset') reset();
       else if (id === 'b-home' || id === 'brand') goHome();
       else if (id === 'resume') { const [a, b] = e.target.dataset.go.split('-').map(Number); openStep(a, b); }
+      else if (id === 't-sq' || id === 't-pc') {
+        if (id === 't-sq') opts.sqNames = !opts.sqNames; else opts.pieceNames = !opts.pieceNames;
+        saveOpts(); renderBoard();
+      }
       else if (id === 'b-resetall') {
         const c = $('#confirmreset'); c.hidden = false;
       } else if (id === 'b-resetyes') { progress = {}; saveProgress(); $('#confirmreset').hidden = true; render(); }

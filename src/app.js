@@ -26,7 +26,47 @@
       : `<span class="pc pb"><i class="pf">${GLYPH[t][0]}</i></span>`;
   }
   const NAMEP = (p) => E.NAME[p.toLowerCase()];
-  function mv(m) { return `<b class="mv">${esc(E.moveText(m))}</b>`; }
+  function mv(m) { return `<b class="mv" data-from="${m.from}" data-to="${m.to}"><span class="gl">${GLYPH[m.p.toLowerCase()][0]}</span>${esc(E.moveText(m))}</b>`; }
+  const sqref = (n) => `<span class="sqref" data-peek="${n}">${n}</span>`;
+  // the same move, told in everyday words (no chess notation needed)
+  function plain(m) {
+    const t = m.p.toLowerCase(), nm = E.NAME[t], mine = E.colorOf(m.p) === 'w';
+    const who = mine ? ' của bạn' : ' đen';
+    if (m.fl === 3 || m.fl === 4) {
+      const side = m.fl === 3 ? 'phải' : 'trái', other = m.fl === 3 ? 'trái' : 'phải';
+      return `Vua${who} đi 2 ô sang ${side}, Xe ở góc bên ${side} nhảy qua đứng sát bên ${other} Vua. Nước đặc biệt này gọi là <b>nhập thành</b>, giúp Vua trốn vào góc an toàn.`;
+    }
+    const df = (m.to & 7) - (m.from & 7), dr = (m.from >> 3) - (m.to >> 3);
+    const ud = dr > 0 ? 'lên' : 'xuống', lr = df > 0 ? 'phải' : 'trái';
+    let path;
+    if (t === 'n') path = `nhảy hình chữ L (${ud} ${Math.abs(dr)} hàng, sang ${lr} ${Math.abs(df)} cột)`;
+    else if (df === 0) path = `đi thẳng ${ud} ${Math.abs(dr)} ô`;
+    else if (dr === 0) path = `đi ngang sang ${lr} ${Math.abs(df)} ô`;
+    else path = `đi chéo ${ud} về bên ${lr} ${Math.abs(df)} ô`;
+    const to = E.sqName(m.to);
+    let s = `${nm}${who} đang đứng ở ô ${sqref(E.sqName(m.from))} ${path}, tới ô ${sqref(to)} (cột ${to[0]}, hàng ${to[1]})`;
+    if (m.fl === 2) s += ', ăn Tốt đứng ngay bên cạnh (luật bắt tốt qua đường)';
+    else if (m.cap) s += `, ăn ${E.NAME[m.cap.toLowerCase()]} ${mine ? 'của đen' : 'của bạn'} đang đứng ở đó`;
+    if (m.promo) s += `, rồi biến thành ${E.NAME[m.promo]}`;
+    return s + '.';
+  }
+  const plainP = (m, extra) => `<p class="plain">${plain(m)}${extra ? ' ' + extra : ''}</p>`;
+  function sanVi(m) {
+    if (m.fl === 3 || m.fl === 4) return 'Nhập thành';
+    return `${E.NAME[m.p.toLowerCase()]} ${m.cap ? 'ăn quân ở' : 'đến'} ${E.sqName(m.to)}${m.promo ? ', thành ' + E.NAME[m.promo] : ''}`;
+  }
+  // wrap square names (e4, f7…) in plain text so hovering/tapping them lights up the square
+  function linkSquares(root) {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: (n) => (n.parentElement.closest('.sqref, .mv, .san, button, .tag') ? NodeFilter.FILTER_REJECT : /\b[a-h][1-8]\b/.test(n.nodeValue) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_SKIP)
+    });
+    const nodes = []; while (walker.nextNode()) nodes.push(walker.currentNode);
+    for (const n of nodes) {
+      const span = document.createElement('span');
+      span.innerHTML = esc(n.nodeValue).replace(/\b([a-h][1-8])\b/g, (x) => sqref(x));
+      n.replaceWith(...span.childNodes);
+    }
+  }
 
   /* ---------- session ---------- */
   function newSession(step) {
@@ -35,7 +75,7 @@
       step, pos, keys: [pos.key()], hist: [], feed: [], selected: -1,
       arrows: [], lastMove: step.lastMove ? [E.sqIdx(step.lastMove[0]), E.sqIdx(step.lastMove[1])] : null,
       stars: new Set((step.stars || []).map(E.sqIdx)), moveCount: 0, solIdx: 0, wrong: 0, hintStage: 0,
-      busy: false, status: '', done: false, over: false, analysis: null, evalScore: null, hintsUsed: 0, celebrate: false
+      busy: false, status: '', done: false, over: false, analysis: null, evalScore: null, hintsUsed: 0, celebrate: false, peek: null
     };
   }
   function interactive() {
@@ -96,6 +136,7 @@
     $('#stepkind').textContent = `Bài ${SI + 1}/${LV.steps.length} · ${{ info: 'Bài học', stars: 'Luyện tập', puzzle: 'Câu đố', game: 'Ván đấu' }[st.type]}`;
     $('#steptitle').textContent = st.title;
     $('#steptext').innerHTML = st.text;
+    linkSquares($('#steptext'));
     renderControls();
     renderBoard();
     renderFeed();
@@ -128,6 +169,7 @@
       if (S.lastMove && S.lastMove.includes(i)) cls += ' last';
       if (i === S.selected) cls += ' sel';
       if (marks.includes(i)) cls += ' mark';
+      if (S.peek && S.peek.includes(i)) cls += ' peek';
       if (i === checkSq) cls += ' check';
       if (targets.includes(i)) cls += p ? ' cap' : ' tgt';
       if (drag && drag.from === i && drag.moved) cls += ' lift';
@@ -146,6 +188,7 @@
   }
   function arrowsSVG() {
     const list = (S.step.type === 'info' ? (S.step.arrows || []).map(([a, b]) => [E.sqIdx(a), E.sqIdx(b), 'info']) : []).concat(S.arrows);
+    if (S.peek && S.peek.length === 2) list.push([S.peek[0], S.peek[1], 'peek']);
     if (!list.length) return '';
     let s = '<svg class="arrows" viewBox="0 0 8 8" aria-hidden="true">';
     for (const [f, t, kind] of list) {
@@ -170,15 +213,17 @@
       ${it.body ? `<div class="fb">${it.body}</div>` : ''}
       ${it.actions && idx === 0 ? `<div class="fa">${it.actions.map((a, j) => `<button class="btn sm ${a.cls || ''}" data-act="${j}">${esc(a.label)}</button>`).join('')}</div>` : ''}
     </div>`).join('');
+    linkSquares(f);
   }
   function renderMoves() {
     const box = $('#moves');
     if (S.step.type !== 'game') { box.hidden = true; return; }
     box.hidden = false;
     if (!S.hist.length) { box.innerHTML = '<span class="mvempty">Chưa có nước đi nào</span>'; return; }
-    let h = '';
+    const cell = (x) => x ? `<span class="mvc" data-from="${x.m.from}" data-to="${x.m.to}"><span class="san">${esc(x.san)}</span><span class="vi">${esc(sanVi(x.m))}</span></span>` : '<span></span>';
+    let h = '<span class="mh"></span><span class="mh">Bạn (Trắng)</span><span class="mh">Đen</span>';
     for (let i = 0; i < S.hist.length; i += 2) {
-      h += `<span class="mvn">${i / 2 + 1}.</span><span class="mw">${esc(S.hist[i].san)}</span><span class="mb">${S.hist[i + 1] ? esc(S.hist[i + 1].san) : ''}</span>`;
+      h += `<span class="mvn">${i / 2 + 1}.</span>${cell(S.hist[i])}${cell(S.hist[i + 1])}`;
     }
     box.innerHTML = h;
     box.scrollTop = box.scrollHeight;
@@ -201,7 +246,10 @@
   function openStep(lv, si, noHash) {
     LV = LEVELS.find((L) => L.id === lv) || LEVELS[0];
     SI = Math.max(0, Math.min(si, LV.steps.length - 1));
+    const lvChanged = !S || !LV || S._lv !== lv;
     S = newSession(LV.steps[SI]);
+    S._lv = lv;
+    if (lvChanged) $('#legend').open = LV.id <= 3;
     view = 'lesson';
     if (!noHash) setHash(`cap${LV.id}-bai${SI + 1}`);
     render();
@@ -308,7 +356,7 @@
       if (!why && st.goal === 'ep') why = 'Hãy dùng Tốt e5 ăn chéo sang ô d6 (ô mà Tốt đen vừa đi qua).';
       if (!why) why = 'Nước này chưa giải được bài. Thử lại nhé!';
       if (S.wrong >= 2 && st.hint) why += `<br><span class="sub">Gợi ý: ${esc(st.hint)}</span>`;
-      push({ kind: 'no', title: `${esc(E.moveText(m))}`, body: why });
+      push({ kind: 'no', title: mv(m), body: why });
       S.busy = true; render();
       later(() => { S.pos.unmake(); S.keys.pop(); S.hist.pop(); S.lastMove = st.lastMove ? [E.sqIdx(st.lastMove[0]), E.sqIdx(st.lastMove[1])] : null; S.busy = false; render(); }, 900);
       return;
@@ -317,16 +365,16 @@
     if (finished) {
       markDone(); S.celebrate = true;
       const reasons = E.explain(pre, m);
-      push({ kind: 'win', label: 'Chính xác', title: esc(E.moveText(m)), body: `${esc(st.success || 'Giải đúng rồi!')}${reasons.length && !mate ? `<ul class="why">${reasons.slice(0, 2).map((r) => `<li>${esc(r)}</li>`).join('')}</ul>` : ''}` });
+      push({ kind: 'win', label: 'Chính xác', title: mv(m), body: `${esc(st.success || 'Giải đúng rồi!')}${reasons.length && !mate ? `<ul class="why">${reasons.slice(0, 2).map((r) => `<li>${esc(r)}</li>`).join('')}</ul>` : ''}` });
       render();
       return;
     }
     S.solIdx++;
-    push({ kind: 'ok', title: esc(E.moveText(m)), body: esc(E.explain(pre, m)[0] || 'Đúng hướng!') + ' Giờ chờ đen đáp lại…' });
+    push({ kind: 'ok', title: mv(m), body: esc(E.explain(pre, m)[0] || 'Đúng hướng!') + ' Giờ chờ đen đáp lại…' });
     S.busy = true; S.status = 'Đen đang suy nghĩ…'; render();
     later(() => {
       const reply = st.solution[S.solIdx] ? S.pos.find(st.solution[S.solIdx]) : (E.think(S.pos, { maxDepth: 3, timeMs: 500 }) || {}).move;
-      if (reply) { applyMove(reply); push({ kind: 'bot', title: esc(E.moveText(reply)), body: 'Đến lượt bạn: hoàn thành đòn đánh!' }); }
+      if (reply) { applyMove(reply); push({ kind: 'bot', title: mv(reply), body: plainP(reply) + '<p>Đến lượt bạn: hoàn thành đòn đánh!</p>' }); }
       S.solIdx++;
       S.busy = false; S.status = ''; S.hintStage = 0; render();
     }, 650);
@@ -374,7 +422,7 @@
     const reasons = E.explain(S.pos, a.best);
     let body = `<ul class="why">${reasons.slice(0, 3).map((r) => `<li>${esc(r)}</li>`).join('')}</ul>`;
     if (Math.abs(a.score) > E.MATE - 1000 && a.score > 0) body += `<p class="sub">Bạn có thể chiếu hết trong ${Math.ceil((E.MATE - a.score) / 2)} nước!</p>`;
-    push({ kind: 'hint', title: `Nên đi: ${mv(a.best)}`, body });
+    push({ kind: 'hint', title: `Nên đi: ${mv(a.best)}`, body: plainP(a.best, 'Xem mũi tên vàng trên bàn cờ.') + '<p class="whyh">Vì sao?</p>' + body });
   }
   function threatNote() {
     const th = E.threatsAgainst(S.pos, 'w');
@@ -397,7 +445,7 @@
         if (botMoveDone.cap) body.push(`Đen đã ăn ${NAMEP(botMoveDone.cap)} của bạn ở ${E.sqName(botMoveDone.to)}.`);
         if (S.pos.inCheck('w')) body.push('<b>Bạn đang bị chiếu!</b> Phải thoát chiếu: chạy Vua, chặn, hoặc ăn quân chiếu.');
         if (warn && (auto || S.step.coach === 'ask')) body.push(auto ? warn : 'Hãy kiểm tra xem quân nào của bạn đang bị đe dọa.');
-        push({ kind: 'bot', title: mv(botMoveDone), body: body.join(' ') || (auto ? 'Đến lượt bạn.' : '') });
+        push({ kind: 'bot', title: mv(botMoveDone), body: plainP(botMoveDone) + (body.length ? `<p>${body.join(' ')}</p>` : auto ? '<p>Đến lượt bạn.</p>' : '') });
       } else if (warn && auto) push({ kind: 'warn', body: warn });
       if (auto && a) showHint(a);
       S.busy = false; S.status = '';
@@ -433,7 +481,7 @@
             body = `<ul class="why">${reasons.slice(0, 2).map((r) => `<li>${esc(r)}</li>`).join('')}</ul>`;
           } else {
             const better = E.explain(pre, a.best);
-            body = `<p>Tốt hơn là ${mv(a.best)}: ${esc(better[0] || '')}</p>`;
+            body = `<p>Tốt hơn là ${mv(a.best)}</p>${plainP(a.best)}<p>Lý do: ${esc(better[0] || '')}</p>`;
             if (rating === 'blunder') {
               const ref = E.think(S.pos, { maxDepth: 3, timeMs: 400 });
               if (ref) {
@@ -442,7 +490,7 @@
                 if (ref.score > E.MATE - 1000) r = `Đen có thể chiếu hết bạn, bắt đầu bằng ${mv(rm)}.`;
                 else if (rm.cap) r = `Đen có thể đáp ${mv(rm)} và ăn ${NAMEP(rm.cap)} của bạn.`;
                 else r = `Đen có nước đáp mạnh: ${mv(rm)}.`;
-                body += `<p>${r}</p>`;
+                body += `<p class="danger">${r}</p>${plainP(rm)}`;
               }
             }
           }
@@ -527,7 +575,7 @@
       if (S.hintStage === 1 && st.hint) push({ kind: 'hint', title: 'Gợi ý', body: esc(st.hint) });
       else if (target) {
         const m = S.pos.find(target);
-        if (m) { S.arrows = [[m.from, m.to, 'hint']]; push({ kind: 'hint', title: `Đáp án: ${mv(m)}`, body: 'Mũi tên vàng chỉ nước đi đúng. Hãy đi thử!' }); }
+        if (m) { S.arrows = [[m.from, m.to, 'hint']]; push({ kind: 'hint', title: `Đáp án: ${mv(m)}`, body: plainP(m, 'Mũi tên vàng chỉ nước đi đúng. Hãy đi thử!') }); }
       }
       render(); return;
     }
@@ -623,6 +671,20 @@
       if (e.key === 'Enter' && e.target.classList && e.target.classList.contains('lvcard')) e.target.click();
     });
     window.addEventListener('hashchange', fromHash);
+    const peekOf = (el) => {
+      if (el.dataset.peek) return [E.sqIdx(el.dataset.peek)];
+      return [+el.dataset.from, +el.dataset.to];
+    };
+    let peekTimer = null;
+    const setPeek = (sqs) => { if (!S || view !== 'lesson') return; const same = JSON.stringify(S.peek) === JSON.stringify(sqs); if (same) return; S.peek = sqs; renderBoard(); };
+    document.addEventListener('mouseover', (e) => { const el = e.target.closest('.sqref, [data-from]'); if (el) { clearTimeout(peekTimer); setPeek(peekOf(el)); } });
+    document.addEventListener('mouseout', (e) => { const el = e.target.closest('.sqref, [data-from]'); if (el && !el.contains(e.relatedTarget)) setPeek(null); });
+    document.addEventListener('click', (e) => {
+      const el = e.target.closest('.sqref, [data-from]');
+      if (!el) return;
+      setPeek(peekOf(el)); clearTimeout(peekTimer); peekTimer = setTimeout(() => setPeek(null), 2500);
+      if (window.innerWidth < 860) $('#board').scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
   }
 
   function start() {

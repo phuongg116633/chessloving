@@ -1,0 +1,1616 @@
+<!doctype html>
+<html lang="vi">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>body{margin:0}</style>
+<title>Cờ Vua Từng Bước</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Lexend:wght@500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Symbols+2&text=%E2%99%94%E2%99%95%E2%99%96%E2%99%97%E2%99%98%E2%99%99%E2%99%9A%E2%99%9B%E2%99%9C%E2%99%9D%E2%99%9E%E2%99%9F&display=block">
+<style>
+/* Layout: lesson rail | board (the hero) | coach panel. Slate-blue board, amber = the coach's voice. */
+:root {
+  --bg: #EDF0F4; --panel: #FFFFFF; --panel2: #F5F7FA; --ink: #17212C; --muted: #5A6777; --line: #D5DCE5;
+  --accent: #B8730F; --accent-ink: #FFFFFF; --accent-soft: #FBEBD0; --accent-btn: #C67E14;
+  --sq-l: #E3E9EF; --sq-d: #8199AF; --coord-l: #6E859B; --coord-d: #EEF2F6;
+  --good: #23824F; --good-soft: #DCF1E5; --ok: #3A6EA8; --ok-soft: #DFEAF7; --warn: #A86A0B; --warn-soft: #FBEBD0; --bad: #B83C28; --bad-soft: #F8E0DB;
+  --shadow: 0 1px 2px rgba(23,33,44,.06), 0 8px 24px rgba(23,33,44,.07);
+  --f-display: "Lexend", "Be Vietnam Pro", system-ui, sans-serif;
+  --f-body: "Be Vietnam Pro", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --f-piece: "Noto Sans Symbols 2", "Segoe UI Symbol", "DejaVu Sans", "Apple Symbols", sans-serif;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #0F151C; --panel: #17202A; --panel2: #1C2632; --ink: #E3E9F0; --muted: #93A1B1; --line: #2A3643;
+  --accent: #F0AA45; --accent-ink: #1A1206; --accent-soft: #3A2A12; --accent-btn: #E9A23C;
+  --sq-l: #BCC8D4; --sq-d: #5D7389; --coord-l: #5D7389; --coord-d: #DCE4EC;
+  --good: #52C48C; --good-soft: #163527; --ok: #7EAEE6; --ok-soft: #1A2B40; --warn: #EDB04F; --warn-soft: #3A2A12; --bad: #F07A63; --bad-soft: #3D1D18;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25); color-scheme: dark; } }
+:root[data-theme="dark"] {
+  --bg: #0F151C; --panel: #17202A; --panel2: #1C2632; --ink: #E3E9F0; --muted: #93A1B1; --line: #2A3643;
+  --accent: #F0AA45; --accent-ink: #1A1206; --accent-soft: #3A2A12; --accent-btn: #E9A23C;
+  --sq-l: #BCC8D4; --sq-d: #5D7389; --coord-l: #5D7389; --coord-d: #DCE4EC;
+  --good: #52C48C; --good-soft: #163527; --ok: #7EAEE6; --ok-soft: #1A2B40; --warn: #EDB04F; --warn-soft: #3A2A12; --bad: #F07A63; --bad-soft: #3D1D18;
+  --shadow: 0 1px 2px rgba(0,0,0,.3), 0 8px 24px rgba(0,0,0,.25); color-scheme: dark; }
+
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { background: var(--bg); color: var(--ink); }
+body { font-family: var(--f-body); font-size: 15px; line-height: 1.55; -webkit-font-smoothing: antialiased; }
+button { font: inherit; color: inherit; cursor: pointer; }
+button:focus-visible, .lvcard:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+h1, h2, h3 { font-family: var(--f-display); text-wrap: balance; margin: 0; letter-spacing: -0.01em; }
+
+/* header */
+.top { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20; background: var(--panel); border-bottom: 1px solid var(--line); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 30; background: var(--panel); }
+.topin { display: flex; align-items: center; gap: 16px; padding-block: 10px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); max-width: 1440px; margin: 0 auto; }
+.brand { display: flex; align-items: center; gap: 10px; background: none; border: 0; padding: 0; flex: none; }
+.brand .logo { width: 34px; height: 34px; border-radius: 8px; background: var(--sq-d); display: grid; place-items: center; font-family: var(--f-piece); font-size: 24px; line-height: 1; color: #fff; }
+.brand .bn { font-family: var(--f-display); font-weight: 700; font-size: 17px; white-space: nowrap; }
+.lvnav { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; min-width: 0; flex: 1; justify-content: flex-end; }
+.lvnav::-webkit-scrollbar { display: none; }
+.lvchip { display: flex; align-items: center; gap: 8px; border: 1px solid var(--line); background: var(--panel); border-radius: 999px; padding: 4px 12px 4px 4px; white-space: nowrap; font-size: 13px; color: var(--muted); }
+.lvchip .n { width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--panel2); font-weight: 700; color: var(--ink); font-family: var(--f-display); }
+.lvchip.full .n { background: var(--good-soft); color: var(--good); }
+.lvchip.cur { border-color: var(--accent); color: var(--ink); background: var(--accent-soft); }
+.lvchip.cur .n { background: var(--accent-btn); color: var(--accent-ink); }
+@media (max-width: 1180px) { .lvchip .t { display: none; } .lvchip { padding: 4px; } }
+@media (max-width: 520px) { .brand .bn { display: none; } }
+
+.wrap { max-width: 1440px; margin: 0 auto; padding-block: 24px 48px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+
+/* home */
+.hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 32px; align-items: center; padding-block: 12px 28px; }
+.hero h1 { font-size: clamp(30px, 4.4vw, 50px); line-height: 1.08; font-weight: 700; }
+.hero h1 em { font-style: normal; color: var(--accent); }
+.hero p.lead { font-size: 17px; color: var(--muted); max-width: 56ch; margin: 14px 0 22px; }
+.herobtns { display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
+.overall { color: var(--muted); font-size: 14px; }
+.overall .num { font-weight: 700; color: var(--ink); font-variant-numeric: tabular-nums; }
+.steps3 { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.steps3 li { display: grid; grid-template-columns: 40px 1fr; gap: 12px; align-items: start; background: var(--panel); border: 1px solid var(--line); border-radius: 12px; padding: 12px 14px; }
+.steps3 .ic { width: 40px; height: 40px; border-radius: 10px; display: grid; place-items: center; font-family: var(--f-piece); font-size: 26px; background: var(--panel2); line-height: 1; }
+.steps3 b { display: block; font-family: var(--f-display); font-weight: 600; }
+.steps3 span { color: var(--muted); font-size: 14px; }
+.sech { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin: 8px 0 14px; flex-wrap: wrap; }
+.sech h2 { font-size: 22px; }
+.levels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+@media (max-width: 980px) { .levels { grid-template-columns: repeat(2, minmax(0, 1fr)); } .hero { grid-template-columns: 1fr; } }
+@media (max-width: 600px) { .levels { grid-template-columns: 1fr; } }
+.lvcard { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px; cursor: pointer; transition: border-color .15s, transform .15s; min-width: 0; }
+.lvcard:hover { border-color: var(--accent); transform: translateY(-2px); }
+.lvtop { display: flex; justify-content: space-between; align-items: center; }
+.lvno { font-family: var(--f-display); font-weight: 600; font-size: 13px; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+.lvstate { font-size: 12px; padding: 2px 9px; border-radius: 999px; background: var(--panel2); color: var(--muted); }
+.lvstate.part { background: var(--ok-soft); color: var(--ok); }
+.lvstate.full { background: var(--good-soft); color: var(--good); }
+.lvcard h3 { font-size: 20px; margin-top: 4px; }
+.lvshort { margin: 0; font-weight: 600; font-size: 14px; }
+.lvintro { margin: 0; color: var(--muted); font-size: 14px; flex: 1; }
+.lvfoot { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
+.lvmeta { font-size: 12.5px; color: var(--muted); }
+.bar { width: 80px; height: 6px; border-radius: 3px; background: var(--panel2); overflow: hidden; flex: none; border: 1px solid var(--line); }
+.bar i { display: block; height: 100%; background: var(--good); }
+.resetrow { margin-top: 28px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; color: var(--muted); font-size: 14px; }
+
+/* buttons */
+.btn { border: 1px solid var(--line); background: var(--panel); border-radius: 10px; padding: 9px 16px; font-weight: 600; font-size: 14px; transition: background .15s, border-color .15s; }
+.btn:hover:not(:disabled) { border-color: var(--muted); }
+.btn:disabled { opacity: .45; cursor: not-allowed; }
+.btn.primary { background: var(--accent-btn); border-color: var(--accent-btn); color: var(--accent-ink); }
+.btn.primary:hover:not(:disabled) { filter: brightness(1.06); border-color: var(--accent-btn); }
+.btn.hint { background: var(--accent-soft); border-color: transparent; color: var(--accent); }
+.btn.ghost { color: var(--muted); }
+.btn.big { padding: 12px 22px; font-size: 16px; border-radius: 12px; }
+.btn.sm { padding: 6px 12px; font-size: 13px; border-radius: 8px; }
+
+/* lesson layout */
+.lesson { display: grid; grid-template-columns: 250px minmax(0, 1fr) 380px; gap: 22px; align-items: start; }
+.rail { position: sticky; top: calc(env(safe-area-inset-top, 0px) + 72px); }
+.rail .lvt { font-family: var(--f-display); font-weight: 600; font-size: 15px; margin: 2px 0 10px; }
+.steps { display: flex; flex-direction: column; gap: 4px; }
+.step { display: flex; gap: 10px; align-items: center; text-align: left; border: 1px solid transparent; background: none; border-radius: 10px; padding: 7px 8px; min-width: 0; }
+.step:hover { background: var(--panel); }
+.step.cur { background: var(--panel); border-color: var(--line); box-shadow: var(--shadow); }
+.step .sn { flex: none; width: 26px; height: 26px; border-radius: 50%; display: grid; place-items: center; font-size: 12.5px; font-weight: 700; background: var(--panel2); border: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+.step.done .sn { background: var(--good-soft); color: var(--good); border-color: transparent; }
+.step.cur .sn { background: var(--accent-btn); color: var(--accent-ink); border-color: transparent; }
+.step .sx { display: flex; flex-direction: column; min-width: 0; }
+.step .sk { font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.step .st { font-size: 14px; font-weight: 600; line-height: 1.3; }
+.center { display: flex; flex-direction: column; align-items: center; gap: 12px; min-width: 0; }
+.boardwrap { display: flex; gap: 10px; width: min(100%, 640px, calc(100dvh - 130px)); min-width: 260px; align-items: stretch; }
+.evalbar { width: 14px; flex: none; border-radius: 4px; background: #1D2631; position: relative; overflow: hidden; border: 1px solid var(--line); }
+.evalbar #evalfill { position: absolute; left: 0; right: 0; bottom: 0; background: #F4F6F8; transition: height .5s ease; height: 50%; }
+.evalbar #evaltxt { position: absolute; left: 50%; bottom: 4px; transform: translateX(-50%) rotate(180deg); writing-mode: vertical-rl; font-size: 10px; font-weight: 700; color: #4A5868; font-variant-numeric: tabular-nums; }
+.boardwrap.noeval .evalbar { display: none; }
+.boardbox { position: relative; flex: 1; min-width: 0; }
+.board { display: grid; grid-template-columns: repeat(8, 1fr); grid-template-rows: repeat(8, 1fr); aspect-ratio: 1; width: 100%; border-radius: 8px; overflow: hidden; box-shadow: var(--shadow); touch-action: none; user-select: none; -webkit-user-select: none; position: relative; container-type: inline-size; }
+.sq { position: relative; display: grid; place-items: center; }
+.sq.l { background: var(--sq-l); } .sq.d { background: var(--sq-d); }
+.sq.last::before { content: ""; position: absolute; inset: 0; background: rgba(240, 190, 70, .42); }
+.sq.sel::before { content: ""; position: absolute; inset: 0; background: rgba(60, 170, 110, .5); }
+.sq.mark::after { content: ""; position: absolute; inset: 7%; border: 3px solid var(--accent-btn); border-radius: 6px; }
+.sq.check { background: radial-gradient(circle, #ff5a3c 0%, rgba(230, 60, 40, .75) 40%, transparent 75%), var(--sq-d); }
+.sq.l.check { background: radial-gradient(circle, #ff5a3c 0%, rgba(230, 60, 40, .75) 40%, transparent 75%), var(--sq-l); }
+.sq.tgt::after { content: ""; position: absolute; width: 30%; height: 30%; border-radius: 50%; background: rgba(20, 40, 30, .28); }
+.sq.cap::after { content: ""; position: absolute; inset: 4%; border-radius: 50%; border: 5px solid rgba(20, 40, 30, .3); }
+.co { position: absolute; font-size: clamp(9px, 1.9cqi, 13px); font-weight: 700; line-height: 1; pointer-events: none; z-index: 1; }
+.co.rk { top: 4%; left: 5%; } .co.fl { bottom: 4%; right: 6%; }
+.sq.l .co { color: var(--coord-l); } .sq.d .co { color: var(--coord-d); }
+.pc { position: relative; width: 100%; height: 100%; display: grid; place-items: center; font-family: var(--f-piece); font-size: 9.2cqi; line-height: 1; z-index: 2; pointer-events: none; }
+.pc i { font-style: normal; grid-area: 1 / 1; display: block; transform: translateY(-2%); }
+.pw .pf { color: #FAFAF7; }
+.pw .po { color: #18212B; }
+.pb .pf { color: #18212B; text-shadow: 0 0 1px rgba(255,255,255,.55); }
+.sq.lift .pc { opacity: .25; }
+.star { width: 58%; height: 58%; fill: #F2B336; stroke: #9A6206; stroke-width: 1.2; filter: drop-shadow(0 1px 1px rgba(0,0,0,.25)); z-index: 2; animation: twinkle 2.4s ease-in-out infinite; }
+@keyframes twinkle { 50% { transform: scale(.88); } }
+.arrows { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; }
+.arw line { stroke-width: .17; stroke-linecap: round; }
+.arw.hint line { stroke: rgba(236, 152, 24, .88); } .arw.hint polygon { fill: rgba(236, 152, 24, .88); }
+.arw.info line { stroke: rgba(205, 60, 40, .8); } .arw.info polygon { fill: rgba(205, 60, 40, .8); }
+.board.locked { cursor: default; }
+.board:not(.locked) .sq { cursor: pointer; }
+.board.celebrate { animation: glow 1.4s ease-out 1; }
+@keyframes glow { 0% { box-shadow: 0 0 0 0 rgba(82, 196, 140, .8); } 100% { box-shadow: 0 0 0 22px rgba(82, 196, 140, 0); } }
+.dragghost { position: fixed; left: 0; top: 0; pointer-events: none; z-index: 100; container-type: inline-size; }
+.dragghost .pc { font-size: 74cqi; filter: drop-shadow(0 6px 8px rgba(0,0,0,.35)); }
+.promo { position: absolute; inset: 0; background: rgba(15, 21, 28, .55); display: grid; place-items: center; z-index: 10; border-radius: 8px; }
+.pbox { background: var(--panel); border-radius: 14px; padding: 16px; box-shadow: var(--shadow); text-align: center; }
+.pbox p { margin: 0 0 10px; font-weight: 600; }
+.prow { display: flex; gap: 8px; }
+.pbtn { width: 70px; border: 1px solid var(--line); background: var(--sq-l); border-radius: 10px; padding: 4px 0 6px; container-type: inline-size; color: #18212B; }
+.pbtn .pc { height: 52px; font-size: 62cqi; }
+.pbtn span { font-size: 12px; font-weight: 600; }
+.under { width: min(100%, 640px, calc(100dvh - 130px)); display: flex; justify-content: center; }
+.status { font-size: 14px; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.status::before { content: ""; width: 10px; height: 10px; border-radius: 50%; border: 2px solid var(--accent); border-right-color: transparent; animation: spin .8s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* coach */
+.coach { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; min-width: 0; }
+.stepkind { font-size: 12px; text-transform: uppercase; letter-spacing: .07em; color: var(--accent); font-weight: 700; }
+.steptitle { font-size: 22px; margin: 4px 0 8px; }
+.steptext { font-size: 14.5px; }
+.steptext p { margin: 0 0 8px; } .steptext p:last-child { margin-bottom: 0; }
+.steptext ol, .steptext ul { margin: 4px 0 8px; padding-left: 20px; } .steptext li { margin-bottom: 4px; }
+.vtab { border-collapse: collapse; margin: 6px 0 10px; font-variant-numeric: tabular-nums; }
+.vtab td { padding: 3px 14px 3px 0; border-bottom: 1px solid var(--line); }
+.g { font-family: var(--f-piece); font-size: 18px; display: inline-block; width: 22px; }
+.controls { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 14px; }
+.controls #b-next { margin-left: auto; }
+.coachhead { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+.coachhead .av { width: 36px; height: 36px; border-radius: 50%; background: var(--accent-soft); display: grid; place-items: center; font-family: var(--f-piece); font-size: 22px; color: var(--accent); line-height: 1; }
+.coachhead b { font-family: var(--f-display); font-weight: 600; display: block; line-height: 1.2; }
+.coachhead span { font-size: 12.5px; color: var(--muted); }
+.feed { display: flex; flex-direction: column; gap: 8px; max-height: 460px; overflow-y: auto; padding-right: 2px; }
+.feed .empty { color: var(--muted); font-size: 14px; padding: 6px 0; }
+.fi { border-radius: 10px; padding: 10px 12px; background: var(--panel2); border: 1px solid var(--line); font-size: 14px; }
+.fi:not(.new) { opacity: .72; }
+.fi.new { animation: pop .3s ease-out; }
+@keyframes pop { from { transform: translateY(-4px); opacity: .3; } }
+.fh { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; }
+.ft { font-weight: 600; }
+.fb { margin-top: 4px; color: var(--ink); }
+.fb p { margin: 2px 0; }
+.fa { margin-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; }
+.why { margin: 4px 0 0; padding-left: 18px; } .why li { margin: 2px 0; }
+.sub { color: var(--muted); font-size: 13px; }
+.mv { font-weight: 700; white-space: nowrap; }
+.tag { display: inline-block; font-size: 11.5px; font-weight: 700; letter-spacing: .03em; padding: 2px 8px; border-radius: 6px; background: var(--panel); border: 1px solid var(--line); color: var(--muted); white-space: nowrap; }
+.tag.best, .tag.win, .tag.ok, .tag.good { background: var(--good-soft); color: var(--good); border-color: transparent; }
+.tag.good { background: var(--ok-soft); color: var(--ok); }
+.tag.inacc, .tag.warn, .tag.draw { background: var(--warn-soft); color: var(--warn); border-color: transparent; }
+.tag.blunder, .tag.lose, .tag.no, .tag.bad { background: var(--bad-soft); color: var(--bad); border-color: transparent; }
+.tag.hint { background: var(--accent-btn); color: var(--accent-ink); border-color: transparent; }
+.fi.k-hint { border-color: var(--accent-btn); background: var(--accent-soft); }
+.fi.k-win { border-color: var(--good); background: var(--good-soft); }
+.fi.k-blunder, .fi.k-lose { border-color: var(--bad); }
+.moves { display: grid; grid-template-columns: 34px 1fr 1fr; gap: 2px 8px; font-size: 13.5px; max-height: 128px; overflow-y: auto; font-variant-numeric: tabular-nums; margin-top: 12px; border-top: 1px solid var(--line); padding-top: 10px; }
+.moves .mvn { color: var(--muted); } .moves .mw, .moves .mb { font-weight: 600; }
+.mvempty { grid-column: 1 / -1; color: var(--muted); }
+.confirm { background: var(--bad-soft); border-radius: 10px; padding: 10px 12px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; color: var(--ink); }
+
+@media (max-width: 1240px) {
+  .lesson { grid-template-columns: minmax(0, 1fr) 360px; }
+  .rail { position: static; grid-column: 1 / -1; }
+  .rail .lvt { display: none; }
+  .steps { flex-direction: row; overflow-x: auto; padding-bottom: 4px; scrollbar-width: thin; }
+  .step { flex: none; max-width: 220px; }
+}
+@media (max-width: 860px) {
+  .lesson { grid-template-columns: minmax(0, 1fr); }
+  .boardwrap, .under { width: 100%; min-width: 0; }
+  .feed { max-height: none; }
+  .wrap { padding-block: 14px 40px; }
+  .steptitle { font-size: 19px; }
+}
+@media (max-width: 420px) { .step .sk { display: none; } .evalbar { width: 10px; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
+</style>
+
+</head>
+<body>
+<header class="top"><div class="topin">
+  <button class="brand" id="brand" aria-label="Trang chủ"><span class="logo">♞</span><span class="bn">Cờ Vua Từng Bước</span></button>
+  <nav class="lvnav" id="lvnav" aria-label="Chọn cấp độ"></nav>
+</div></header>
+
+<main class="wrap">
+  <section id="home">
+    <div class="hero">
+      <div>
+        <h1>Học cờ vua <em>cầm tay chỉ việc</em>, từ nước đi đầu tiên đến ván thắng đầu tiên.</h1>
+        <p class="lead">Bạn cầm quân Trắng. Huấn luyện viên ngồi cạnh bàn cờ, chỉ bằng mũi tên nước nên đi, giải thích vì sao, cảnh báo khi quân của bạn bị đe dọa và chấm điểm từng nước. 6 cấp độ, chọn cấp phù hợp với bạn.</p>
+        <div class="herobtns"><button class="btn primary big" id="resume" data-go="1-0">Bắt đầu từ Cấp 1</button><span class="overall" id="overall"></span></div>
+      </div>
+      <ul class="steps3">
+        <li><span class="ic">♟</span><div><b>Chưa biết luật?</b><span>Cấp 1–2: cách đi từng quân, chiếu, chiếu hết, nhập thành, phong cấp.</span></div></li>
+        <li><span class="ic">♞</span><div><b>Đã biết đi quân?</b><span>Cấp 3–4: khai cuộc đúng nguyên tắc và các đòn chiến thuật thắng quân.</span></div></li>
+        <li><span class="ic">♛</span><div><b>Muốn thắng thật?</b><span>Cấp 5–6: kỹ thuật tàn cuộc và ván đấu với đối thủ mạnh dần.</span></div></li>
+      </ul>
+    </div>
+    <div class="sech"><h2>Chọn cấp độ</h2><span class="sub">Mỗi cấp gồm bài học, câu đố và ván đấu có huấn luyện viên</span></div>
+    <div class="levels" id="levels"></div>
+    <div class="resetrow"><span>Tiến độ được lưu trên trình duyệt này.</span><button class="btn sm ghost" id="b-resetall">Xóa tiến độ</button>
+      <div class="confirm" id="confirmreset" hidden><span>Xóa toàn bộ tiến độ học?</span><button class="btn sm" id="b-resetyes">Xóa</button><button class="btn sm" id="b-resetno">Giữ lại</button></div></div>
+  </section>
+
+  <section id="lesson" class="lesson" hidden>
+    <aside class="rail"><div class="lvt" id="lvtitle"></div><div class="steps" id="steps"></div></aside>
+    <div class="center">
+      <div class="boardwrap" id="boardwrap">
+        <div class="evalbar" id="evalbar"><div id="evalfill"></div><span id="evaltxt">0.0</span></div>
+        <div class="boardbox"><div class="board" id="board" aria-label="Bàn cờ"></div><div class="promo" id="promo" hidden></div></div>
+      </div>
+      <div class="under"><div class="status" id="status" hidden></div></div>
+    </div>
+    <div class="coach">
+      <div class="card">
+        <div class="stepkind" id="stepkind"></div>
+        <h2 class="steptitle" id="steptitle"></h2>
+        <div class="steptext" id="steptext"></div>
+        <div class="controls" id="controls"></div>
+      </div>
+      <div class="card">
+        <div class="coachhead"><span class="av">♚</span><div><b>Huấn luyện viên</b><span>Nhận xét mới nhất ở trên cùng</span></div></div>
+        <div class="feed" id="feed" aria-live="polite"></div>
+        <div class="moves" id="moves" hidden></div>
+      </div>
+    </div>
+  </section>
+</main>
+<div class="dragghost" id="ghost" hidden></div>
+<script>
+/* ===== Chess engine: rules, search, coaching analysis ===== */
+const Engine = (function () {
+  'use strict';
+  const START = 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1';
+  const VAL = { p: 100, n: 320, b: 330, r: 500, q: 900, k: 0 };
+  const NAME = { p: 'Tốt', n: 'Mã', b: 'Tượng', r: 'Xe', q: 'Hậu', k: 'Vua' };
+  const MATE = 100000, INF = 1e9;
+
+  const PST = {
+    p: [0,0,0,0,0,0,0,0, 50,50,50,50,50,50,50,50, 10,10,20,30,30,20,10,10, 5,5,10,25,25,10,5,5, 0,0,0,20,20,0,0,0, 5,-5,-10,0,0,-10,-5,5, 5,10,10,-20,-20,10,10,5, 0,0,0,0,0,0,0,0],
+    n: [-50,-40,-30,-30,-30,-30,-40,-50, -40,-20,0,0,0,0,-20,-40, -30,0,10,15,15,10,0,-30, -30,5,15,20,20,15,5,-30, -30,0,15,20,20,15,0,-30, -30,5,10,15,15,10,5,-30, -40,-20,0,5,5,0,-20,-40, -50,-40,-30,-30,-30,-30,-40,-50],
+    b: [-20,-10,-10,-10,-10,-10,-10,-20, -10,0,0,0,0,0,0,-10, -10,0,5,10,10,5,0,-10, -10,5,5,10,10,5,5,-10, -10,0,10,10,10,10,0,-10, -10,10,10,10,10,10,10,-10, -10,5,0,0,0,0,5,-10, -20,-10,-10,-10,-10,-10,-10,-20],
+    r: [0,0,0,0,0,0,0,0, 5,10,10,10,10,10,10,5, -5,0,0,0,0,0,0,-5, -5,0,0,0,0,0,0,-5, -5,0,0,0,0,0,0,-5, -5,0,0,0,0,0,0,-5, -5,0,0,0,0,0,0,-5, 0,0,0,5,5,0,0,0],
+    q: [-20,-10,-10,-5,-5,-10,-10,-20, -10,0,0,0,0,0,0,-10, -10,0,5,5,5,5,0,-10, -5,0,5,5,5,5,0,-5, 0,0,5,5,5,5,0,-5, -10,5,5,5,5,5,0,-10, -10,0,5,0,0,0,0,-10, -20,-10,-10,-5,-5,-10,-10,-20],
+    km: [-30,-40,-40,-50,-50,-40,-40,-30, -30,-40,-40,-50,-50,-40,-40,-30, -30,-40,-40,-50,-50,-40,-40,-30, -30,-40,-40,-50,-50,-40,-40,-30, -20,-30,-30,-40,-40,-30,-30,-20, -10,-20,-20,-20,-20,-20,-20,-10, 20,20,0,0,0,0,20,20, 20,30,10,0,0,10,30,20],
+    ke: [-50,-40,-30,-20,-20,-30,-40,-50, -30,-20,-10,0,0,-10,-20,-30, -30,-10,20,30,30,20,-10,-30, -30,-10,30,40,40,30,-10,-30, -30,-10,30,40,40,30,-10,-30, -30,-10,20,30,30,20,-10,-30, -30,-30,0,0,0,0,-30,-30, -50,-30,-30,-30,-30,-30,-30,-50]
+  };
+  const PASSED = [0, 0, 10, 20, 35, 60, 100, 0]; // by ranks advanced from start
+
+  // precomputed geometry (index 0 = a8, 63 = h1)
+  const KN = [], KG = [], RD = [], RO = [];
+  for (let s = 0; s < 64; s++) {
+    const r = s >> 3, c = s & 7;
+    const jump = (ds) => ds.map(([dr, dc]) => [r + dr, c + dc]).filter(([a, b]) => a >= 0 && a < 8 && b >= 0 && b < 8).map(([a, b]) => a * 8 + b);
+    KN[s] = jump([[-2,-1],[-2,1],[-1,-2],[-1,2],[1,-2],[1,2],[2,-1],[2,1]]);
+    KG[s] = jump([[-1,-1],[-1,0],[-1,1],[0,-1],[0,1],[1,-1],[1,0],[1,1]]);
+    const ray = (dirs) => dirs.map(([dr, dc]) => { const a = []; let nr = r + dr, nc = c + dc; while (nr >= 0 && nr < 8 && nc >= 0 && nc < 8) { a.push(nr * 8 + nc); nr += dr; nc += dc; } return a; });
+    RD[s] = ray([[-1,-1],[-1,1],[1,-1],[1,1]]);
+    RO[s] = ray([[-1,0],[1,0],[0,-1],[0,1]]);
+  }
+  const CR = new Array(64).fill(15);
+  CR[60] = 12; CR[63] = 14; CR[56] = 13; CR[4] = 3; CR[7] = 11; CR[0] = 7;
+
+  const sqName = (s) => 'abcdefgh'[s & 7] + (8 - (s >> 3));
+  const sqIdx = (n) => (8 - +n[1]) * 8 + 'abcdefgh'.indexOf(n[0]);
+  const colorOf = (p) => (p ? (p < 'a' ? 'w' : 'b') : null);
+  const opp = (c) => (c === 'w' ? 'b' : 'w');
+  const uci = (m) => sqName(m.from) + sqName(m.to) + (m.promo || '');
+
+  class Position {
+    constructor(fen) { this.load(fen || START); }
+    load(fen) {
+      const [bd, turn, cast, ep, half, full] = fen.trim().split(/\s+/);
+      this.b = new Array(64).fill(null);
+      let s = 0;
+      for (const ch of bd) { if (ch === '/') continue; if (ch >= '1' && ch <= '8') s += +ch; else this.b[s++] = ch; }
+      this.turn = turn || 'w';
+      this.castle = 0;
+      if (cast && cast !== '-') { if (cast.includes('K')) this.castle |= 1; if (cast.includes('Q')) this.castle |= 2; if (cast.includes('k')) this.castle |= 4; if (cast.includes('q')) this.castle |= 8; }
+      this.ep = ep && ep !== '-' ? sqIdx(ep) : -1;
+      this.half = +half || 0; this.full = +full || 1;
+      this.kw = this.b.indexOf('K'); this.kb = this.b.indexOf('k');
+      this.hist = [];
+    }
+    fen() {
+      let out = '';
+      for (let r = 0; r < 8; r++) {
+        let e = 0;
+        for (let c = 0; c < 8; c++) { const p = this.b[r * 8 + c]; if (!p) e++; else { if (e) { out += e; e = 0; } out += p; } }
+        if (e) out += e; if (r < 7) out += '/';
+      }
+      let cs = (this.castle & 1 ? 'K' : '') + (this.castle & 2 ? 'Q' : '') + (this.castle & 4 ? 'k' : '') + (this.castle & 8 ? 'q' : '');
+      return `${out} ${this.turn} ${cs || '-'} ${this.ep >= 0 ? sqName(this.ep) : '-'} ${this.half} ${this.full}`;
+    }
+    key() { return this.b.map((p) => p || '.').join('') + this.turn + this.castle + (this.ep >= 0 ? this.ep : ''); }
+    clone() { const p = new Position('8/8/8/8/8/8/8/8 w - - 0 1'); p.b = this.b.slice(); p.turn = this.turn; p.castle = this.castle; p.ep = this.ep; p.half = this.half; p.full = this.full; p.kw = this.kw; p.kb = this.kb; return p; }
+
+    attacked(sq, by) {
+      const b = this.b, r = sq >> 3, c = sq & 7;
+      if (by === 'w') { if (r < 7) { if (c > 0 && b[sq + 7] === 'P') return true; if (c < 7 && b[sq + 9] === 'P') return true; } }
+      else { if (r > 0) { if (c > 0 && b[sq - 9] === 'p') return true; if (c < 7 && b[sq - 7] === 'p') return true; } }
+      const w = by === 'w';
+      const N = w ? 'N' : 'n', K = w ? 'K' : 'k', B = w ? 'B' : 'b', R = w ? 'R' : 'r', Q = w ? 'Q' : 'q';
+      for (const t of KN[sq]) if (b[t] === N) return true;
+      for (const t of KG[sq]) if (b[t] === K) return true;
+      for (const ray of RD[sq]) for (const t of ray) { const p = b[t]; if (p) { if (p === B || p === Q) return true; break; } }
+      for (const ray of RO[sq]) for (const t of ray) { const p = b[t]; if (p) { if (p === R || p === Q) return true; break; } }
+      return false;
+    }
+    // squares of pieces of color `by` attacking sq
+    attackers(sq, by) {
+      const b = this.b, r = sq >> 3, c = sq & 7, out = [], w = by === 'w';
+      if (w) { if (r < 7) { if (c > 0 && b[sq + 7] === 'P') out.push(sq + 7); if (c < 7 && b[sq + 9] === 'P') out.push(sq + 9); } }
+      else { if (r > 0) { if (c > 0 && b[sq - 9] === 'p') out.push(sq - 9); if (c < 7 && b[sq - 7] === 'p') out.push(sq - 7); } }
+      const N = w ? 'N' : 'n', K = w ? 'K' : 'k', B = w ? 'B' : 'b', R = w ? 'R' : 'r', Q = w ? 'Q' : 'q';
+      for (const t of KN[sq]) if (b[t] === N) out.push(t);
+      for (const t of KG[sq]) if (b[t] === K) out.push(t);
+      for (const ray of RD[sq]) for (const t of ray) { const p = b[t]; if (p) { if (p === B || p === Q) out.push(t); break; } }
+      for (const ray of RO[sq]) for (const t of ray) { const p = b[t]; if (p) { if (p === R || p === Q) out.push(t); break; } }
+      return out;
+    }
+    inCheck(color) {
+      color = color || this.turn;
+      const k = color === 'w' ? this.kw : this.kb;
+      return k >= 0 && this.attacked(k, opp(color));
+    }
+    pseudo(capsOnly) {
+      const b = this.b, us = this.turn, W = us === 'w', out = [];
+      const isEnemy = (p) => p && (p < 'a') !== W;
+      for (let s = 0; s < 64; s++) {
+        const p = b[s];
+        if (!p || (p < 'a') !== W) continue;
+        const t = p.toLowerCase();
+        if (t === 'p') {
+          const dir = W ? -8 : 8, r = s >> 3, c = s & 7, startR = W ? 6 : 1, promoR = W ? 0 : 7;
+          const one = s + dir;
+          if (one >= 0 && one < 64 && !b[one]) {
+            if ((one >> 3) === promoR) { for (const pr of capsOnly ? ['q'] : ['q', 'r', 'b', 'n']) out.push({ from: s, to: one, p, cap: null, promo: pr, fl: 0 }); }
+            else if (!capsOnly) {
+              out.push({ from: s, to: one, p, cap: null, promo: null, fl: 0 });
+              if (r === startR && !b[one + dir]) out.push({ from: s, to: one + dir, p, cap: null, promo: null, fl: 1 });
+            }
+          }
+          for (const dc of [-1, 1]) {
+            const nc = c + dc; if (nc < 0 || nc > 7) continue;
+            const to = one + dc; if (to < 0 || to > 63) continue;
+            if (isEnemy(b[to])) {
+              if ((to >> 3) === promoR) { for (const pr of capsOnly ? ['q'] : ['q', 'r', 'b', 'n']) out.push({ from: s, to, p, cap: b[to], promo: pr, fl: 0 }); }
+              else out.push({ from: s, to, p, cap: b[to], promo: null, fl: 0 });
+            } else if (to === this.ep && !b[to]) out.push({ from: s, to, p, cap: W ? 'p' : 'P', promo: null, fl: 2 });
+          }
+        } else if (t === 'n' || t === 'k') {
+          for (const to of (t === 'n' ? KN : KG)[s]) {
+            const q = b[to];
+            if (!q) { if (!capsOnly) out.push({ from: s, to, p, cap: null, promo: null, fl: 0 }); }
+            else if (isEnemy(q)) out.push({ from: s, to, p, cap: q, promo: null, fl: 0 });
+          }
+          if (t === 'k' && !capsOnly) {
+            if (W && s === 60) {
+              if ((this.castle & 1) && !b[61] && !b[62] && b[63] === 'R' && !this.attacked(60, 'b') && !this.attacked(61, 'b') && !this.attacked(62, 'b')) out.push({ from: 60, to: 62, p, cap: null, promo: null, fl: 3 });
+              if ((this.castle & 2) && !b[59] && !b[58] && !b[57] && b[56] === 'R' && !this.attacked(60, 'b') && !this.attacked(59, 'b') && !this.attacked(58, 'b')) out.push({ from: 60, to: 58, p, cap: null, promo: null, fl: 4 });
+            } else if (!W && s === 4) {
+              if ((this.castle & 4) && !b[5] && !b[6] && b[7] === 'r' && !this.attacked(4, 'w') && !this.attacked(5, 'w') && !this.attacked(6, 'w')) out.push({ from: 4, to: 6, p, cap: null, promo: null, fl: 3 });
+              if ((this.castle & 8) && !b[3] && !b[2] && !b[1] && b[0] === 'r' && !this.attacked(4, 'w') && !this.attacked(3, 'w') && !this.attacked(2, 'w')) out.push({ from: 4, to: 2, p, cap: null, promo: null, fl: 4 });
+            }
+          }
+        } else {
+          const rays = t === 'b' ? RD[s] : t === 'r' ? RO[s] : RD[s].concat(RO[s]);
+          for (const ray of rays) for (const to of ray) {
+            const q = b[to];
+            if (!q) { if (!capsOnly) out.push({ from: s, to, p, cap: null, promo: null, fl: 0 }); }
+            else { if (isEnemy(q)) out.push({ from: s, to, p, cap: q, promo: null, fl: 0 }); break; }
+          }
+        }
+      }
+      return out;
+    }
+    make(m) {
+      const b = this.b, us = this.turn;
+      this.hist.push({ m, castle: this.castle, ep: this.ep, half: this.half, kw: this.kw, kb: this.kb });
+      b[m.from] = null;
+      if (m.fl === 2) b[us === 'w' ? m.to + 8 : m.to - 8] = null;
+      b[m.to] = m.promo ? (us === 'w' ? m.promo.toUpperCase() : m.promo) : m.p;
+      if (m.fl === 3) { if (us === 'w') { b[63] = null; b[61] = 'R'; } else { b[7] = null; b[5] = 'r'; } }
+      if (m.fl === 4) { if (us === 'w') { b[56] = null; b[59] = 'R'; } else { b[0] = null; b[3] = 'r'; } }
+      if (m.p === 'K') this.kw = m.to; else if (m.p === 'k') this.kb = m.to;
+      this.castle &= CR[m.from] & CR[m.to];
+      this.ep = m.fl === 1 ? (us === 'w' ? m.from - 8 : m.from + 8) : -1;
+      this.half = (m.p === 'P' || m.p === 'p' || m.cap) ? 0 : this.half + 1;
+      if (us === 'b') this.full++;
+      this.turn = opp(us);
+    }
+    unmake() {
+      const h = this.hist.pop(), m = h.m, b = this.b;
+      this.turn = opp(this.turn);
+      const us = this.turn;
+      if (us === 'b') this.full--;
+      b[m.from] = m.p;
+      if (m.fl === 2) { b[m.to] = null; b[us === 'w' ? m.to + 8 : m.to - 8] = us === 'w' ? 'p' : 'P'; }
+      else b[m.to] = m.cap || null;
+      if (m.fl === 3) { if (us === 'w') { b[63] = 'R'; b[61] = null; } else { b[7] = 'r'; b[5] = null; } }
+      if (m.fl === 4) { if (us === 'w') { b[56] = 'R'; b[59] = null; } else { b[0] = 'r'; b[3] = null; } }
+      this.castle = h.castle; this.ep = h.ep; this.half = h.half; this.kw = h.kw; this.kb = h.kb;
+    }
+    legal() {
+      const out = [], us = this.turn;
+      for (const m of this.pseudo(false)) { this.make(m); if (!this.inCheck(us)) out.push(m); this.unmake(); }
+      return out;
+    }
+    find(u) { return this.legal().find((m) => uci(m) === u || (uci(m) === u + 'q')) || null; }
+    san(m, legalList) {
+      if (m.fl === 3) return this._suffix(m, 'O-O');
+      if (m.fl === 4) return this._suffix(m, 'O-O-O');
+      const t = m.p.toLowerCase();
+      let s = '';
+      if (t === 'p') {
+        if (m.cap) s = 'abcdefgh'[m.from & 7] + 'x';
+        s += sqName(m.to);
+        if (m.promo) s += '=' + m.promo.toUpperCase();
+      } else {
+        s = t.toUpperCase();
+        const amb = (legalList || this.legal()).filter((o) => o.p === m.p && o.to === m.to && o.from !== m.from);
+        if (amb.length) {
+          const sf = amb.some((o) => (o.from & 7) === (m.from & 7)), sr = amb.some((o) => (o.from >> 3) === (m.from >> 3));
+          if (!sf) s += 'abcdefgh'[m.from & 7]; else if (!sr) s += 8 - (m.from >> 3); else s += sqName(m.from);
+        }
+        if (m.cap) s += 'x';
+        s += sqName(m.to);
+      }
+      return this._suffix(m, s);
+    }
+    _suffix(m, s) {
+      this.make(m);
+      if (this.inCheck()) s += this.legal().length ? '+' : '#';
+      this.unmake();
+      return s;
+    }
+    material(color) {
+      let v = 0; for (const p of this.b) if (p && colorOf(p) === color) v += VAL[p.toLowerCase()];
+      return v;
+    }
+  }
+
+  /* ---------- evaluation (white's point of view) ---------- */
+  function evaluate(pos) {
+    const b = pos.b;
+    let npm = 0, wb = 0, bb = 0, wMat = 0, bMat = 0, wPawns = 0, bPawns = 0;
+    for (let s = 0; s < 64; s++) {
+      const p = b[s]; if (!p) continue;
+      const t = p.toLowerCase();
+      if (t !== 'p' && t !== 'k') npm += VAL[t];
+      if (p === 'B') wb++; else if (p === 'b') bb++;
+      if (p < 'a') { wMat += VAL[t]; if (t === 'p') wPawns++; } else { bMat += VAL[t]; if (t === 'p') bPawns++; }
+    }
+    const endgame = npm <= 1400;
+    let sc = 0;
+    for (let s = 0; s < 64; s++) {
+      const p = b[s]; if (!p) continue;
+      const w = p < 'a', t = p.toLowerCase(), i = w ? s : s ^ 56;
+      let v = VAL[t];
+      if (t === 'k') v += endgame ? PST.ke[i] : PST.km[i];
+      else v += PST[t][i];
+      if (t === 'p' && endgame) {
+        const adv = w ? 6 - (s >> 3) : (s >> 3) - 1; // squares advanced
+        v += PASSED[adv + 1] || 0;
+      }
+      sc += w ? v : -v;
+    }
+    if (wb >= 2) sc += 30; if (bb >= 2) sc -= 30;
+    // mop-up: help the stronger side drive a bare king to the edge
+    if (pos.kw >= 0 && pos.kb >= 0 && endgame) {
+      const diff = wMat - bMat;
+      if (Math.abs(diff) >= 400 && (diff > 0 ? bPawns === 0 : wPawns === 0)) {
+        const loser = diff > 0 ? pos.kb : pos.kw, winner = diff > 0 ? pos.kw : pos.kb;
+        const lr = loser >> 3, lc = loser & 7, wr = winner >> 3, wc = winner & 7;
+        const cmd = Math.max(3 - lr, lr - 4) + Math.max(3 - lc, lc - 4);
+        const dist = Math.abs(lr - wr) + Math.abs(lc - wc);
+        // how many squares can the bare king still reach (smaller box = better)
+        let room = 0;
+        const by = diff > 0 ? 'w' : 'b';
+        for (const t of KG[loser]) { const q = pos.b[t]; if ((!q || colorOf(q) === by) && !pos.attacked(t, by)) room++; }
+        const bonus = cmd * 14 + (14 - dist) * 6 - room * 8;
+        sc += diff > 0 ? bonus : -bonus;
+      }
+    }
+    return sc;
+  }
+
+  /* ---------- search ---------- */
+  let nodes = 0, deadline = Infinity, stopped = false;
+  const killers = [];
+  function orderMoves(ms, ply, first) {
+    for (const m of ms) {
+      let s = 0;
+      if (first && m.from === first.from && m.to === first.to && m.promo === first.promo) s = 1e6;
+      else if (m.cap) s = 10000 + VAL[m.cap.toLowerCase()] * 10 - VAL[m.p.toLowerCase()] / 10;
+      else if (m.promo) s = 9000;
+      else if (killers[ply] && killers[ply].some((k) => k && k.from === m.from && k.to === m.to)) s = 5000;
+      m._o = s;
+    }
+    ms.sort((a, c) => c._o - a._o);
+    return ms;
+  }
+  function tick() { if ((++nodes & 1023) === 0 && Date.now() > deadline) stopped = true; return stopped; }
+  function qs(pos, alpha, beta, qd) {
+    if (tick()) return 0;
+    const sign = pos.turn === 'w' ? 1 : -1;
+    const stand = evaluate(pos) * sign;
+    if (stand >= beta) return stand;
+    if (stand > alpha) alpha = stand;
+    if (qd >= 6) return stand;
+    const us = pos.turn;
+    const ms = orderMoves(pos.pseudo(true), 0, null);
+    for (const m of ms) {
+      pos.make(m);
+      if (pos.inCheck(us)) { pos.unmake(); continue; }
+      const sc = -qs(pos, -beta, -alpha, qd + 1);
+      pos.unmake();
+      if (stopped) return 0;
+      if (sc >= beta) return sc;
+      if (sc > alpha) alpha = sc;
+    }
+    return alpha;
+  }
+  function negamax(pos, depth, alpha, beta, ply) {
+    if (tick()) return 0;
+    const us = pos.turn;
+    const chk = pos.inCheck(us);
+    if (chk && ply < 10) depth++;
+    if (depth <= 0) return qs(pos, alpha, beta, 0);
+    if (pos.half >= 100) return 0;
+    let best = -INF, any = false;
+    const ms = orderMoves(pos.pseudo(false), ply, null);
+    for (const m of ms) {
+      pos.make(m);
+      if (pos.inCheck(us)) { pos.unmake(); continue; }
+      any = true;
+      const sc = -negamax(pos, depth - 1, -beta, -alpha, ply + 1);
+      pos.unmake();
+      if (stopped) return 0;
+      if (sc > best) best = sc;
+      if (sc > alpha) alpha = sc;
+      if (alpha >= beta) {
+        if (!m.cap) { killers[ply] = killers[ply] || []; killers[ply].unshift(m); killers[ply].length = 2; }
+        break;
+      }
+    }
+    if (!any) return chk ? -MATE + ply : 0;
+    return best;
+  }
+
+  // iterative deepening; returns { move, score (side-to-move POV), depth, scored }
+  function think(pos, opts) {
+    opts = opts || {};
+    const maxDepth = opts.maxDepth || 4, timeMs = opts.timeMs || 800;
+    const root = pos.legal();
+    if (!root.length) return null;
+    const t0 = Date.now();
+    let scored = root.map((m) => ({ m, s: 0 }));
+    // light initial ordering: captures first
+    orderMoves(root, 0, null);
+    scored = root.map((m) => ({ m, s: 0 }));
+    let result = null;
+    for (let d = 1; d <= maxDepth; d++) {
+      stopped = false; nodes = 0;
+      deadline = d === 1 ? Infinity : t0 + timeMs;
+      let alpha = -INF;
+      for (const it of scored) {
+        pos.make(it.m);
+        const rep = opts.avoid && opts.avoid.has(pos.key());
+        const sc = rep ? 0 : -negamax(pos, d - 1, -INF, -alpha, 1);
+        pos.unmake();
+        if (stopped) break;
+        it.s = sc;
+        if (sc > alpha) alpha = sc;
+      }
+      if (stopped) break;
+      scored.sort((a, c) => c.s - a.s);
+      result = { move: scored[0].m, score: scored[0].s, depth: d };
+      if (Math.abs(scored[0].s) > MATE - 1000) break;
+      if (Date.now() - t0 > timeMs * 0.45) break;
+    }
+    deadline = Infinity; stopped = false;
+    return result;
+  }
+  // exact score (mover POV) of every root move at fixed depth
+  function rootScores(pos, depth, timeMs) {
+    const root = pos.legal();
+    deadline = timeMs ? Date.now() + timeMs : Infinity; stopped = false; nodes = 0;
+    const out = [];
+    for (const m of root) {
+      pos.make(m);
+      const sc = -negamax(pos, depth - 1, -INF, INF, 1);
+      pos.unmake();
+      if (stopped) break;
+      out.push({ m, s: sc });
+    }
+    deadline = Infinity; stopped = false;
+    out.sort((a, c) => c.s - a.s);
+    return out;
+  }
+  // score of a specific move (mover POV) at depth
+  function scoreMove(pos, m, depth, timeMs) {
+    deadline = Date.now() + (timeMs || 1500); stopped = false; nodes = 0;
+    pos.make(m);
+    const sc = -negamax(pos, depth - 1, -INF, INF, 1);
+    pos.unmake();
+    const ok = !stopped;
+    deadline = Infinity; stopped = false;
+    return ok ? sc : null;
+  }
+  function botMove(pos, cfg) {
+    const legal = pos.legal();
+    if (!legal.length) return null;
+    if (cfg.blunder && Math.random() < cfg.blunder) return legal[Math.floor(Math.random() * legal.length)];
+    if (cfg.noise) {
+      const sc = rootScores(pos, cfg.depth || 2, 2500);
+      if (!sc.length) return legal[0];
+      const best = sc[0].s;
+      if (best > MATE - 1000) return sc[0].m;
+      const pool = sc.filter((x) => x.s >= best - cfg.noise);
+      return pool[Math.floor(Math.random() * pool.length)].m;
+    }
+    const r = think(pos, { maxDepth: cfg.depth || 3, timeMs: cfg.timeMs || 1200 });
+    return r ? r.move : legal[0];
+  }
+
+  /* ---------- coaching helpers ---------- */
+  function minAttackerVal(pos, sq, by) {
+    let v = Infinity;
+    for (const a of pos.attackers(sq, by)) { const t = pos.b[a].toLowerCase(); const x = t === 'k' ? 2000 : VAL[t]; if (x < v) v = x; }
+    return v;
+  }
+  // is the piece on sq (belonging to color) under a real threat?
+  function threatened(pos, sq) {
+    const p = pos.b[sq]; if (!p) return false;
+    const c = colorOf(p), t = p.toLowerCase();
+    if (t === 'k') return false;
+    const them = opp(c);
+    if (!pos.attacked(sq, them)) return false;
+    const defended = pos.attacked(sq, c);
+    if (!defended) return true;
+    return minAttackerVal(pos, sq, them) < VAL[t];
+  }
+  function hangingPieces(pos, color) {
+    const out = [];
+    for (let s = 0; s < 64; s++) { const p = pos.b[s]; if (p && colorOf(p) === color && p.toLowerCase() !== 'k' && threatened(pos, s)) out.push(s); }
+    out.sort((a, c) => VAL[pos.b[c].toLowerCase()] - VAL[pos.b[a].toLowerCase()]);
+    return out;
+  }
+  function pname(p) { return NAME[p.toLowerCase()]; }
+
+  // Vietnamese reasons why move m (by side to move) is useful
+  function explain(pos, m) {
+    const us = pos.turn, them = opp(us), t = m.p.toLowerCase();
+    const reasons = [];
+    const nm = NAME[t];
+    const wasThreat = threatened(pos, m.from);
+    const hangBefore = hangingPieces(pos, us).filter((s) => s !== m.from);
+    const centre = [27, 28, 35, 36];
+    pos.make(m);
+    const check = pos.inCheck(them);
+    const replies = pos.legal().length;
+    if (!replies && check) { pos.unmake(); return ['Chiếu hết! Vua đối phương không còn đường thoát.']; }
+    if (!replies) reasons.push('Cẩn thận: sau nước này đối phương hết nước đi mà không bị chiếu, ván cờ sẽ HÒA (hòa pat).');
+    if (m.fl === 3 || m.fl === 4) reasons.push('Nhập thành: đưa Vua vào góc an toàn và đưa Xe ra hoạt động.');
+    if (m.promo) reasons.push(`Phong cấp: Tốt về đích trở thành ${NAME[m.promo]}.`);
+    if (m.fl === 2) reasons.push(`Bắt Tốt qua đường: ăn Tốt ở ${sqName(us === 'w' ? m.to + 8 : m.to - 8)} vừa đi 2 ô.`);
+    else if (m.cap) {
+      const ct = m.cap.toLowerCase();
+      const defended = pos.attacked(m.to, them);
+      if (!defended) reasons.push(`Ăn ${NAME[ct]} ở ${sqName(m.to)} miễn phí, quân này không được bảo vệ.`);
+      else if (VAL[ct] > VAL[t] && t !== 'k') reasons.push(`Dùng ${nm} (${VAL[t] / 100 | 0} điểm) đổi lấy ${NAME[ct]} (${VAL[ct] / 100 | 0} điểm), có lời.`);
+      else if (VAL[ct] === VAL[t] || (ct === 'b' && t === 'n') || (ct === 'n' && t === 'b')) reasons.push(`Đổi ${nm} lấy ${NAME[ct]} ngang giá.`);
+      else reasons.push(`Ăn ${NAME[ct]} ở ${sqName(m.to)}.`);
+    }
+    if (check) reasons.push('Chiếu Vua, buộc đối phương phải đối phó ngay.');
+    // threats created by the moved piece
+    const mover = pos.b[m.to];
+    const targets = [];
+    const myVal = VAL[mover.toLowerCase()] || 0;
+    const enemySqAttacked = (sq) => {
+      // does the piece on m.to attack sq? check via attackers list
+      return pos.attackers(sq, us).includes(m.to);
+    };
+    for (let s = 0; s < 64; s++) {
+      const p = pos.b[s];
+      if (!p || colorOf(p) !== them) continue;
+      if (!enemySqAttacked(s)) continue;
+      const pt = p.toLowerCase();
+      if (pt === 'k') { targets.push({ s, pt }); continue; }
+      if (VAL[pt] > myVal || !pos.attacked(s, them)) targets.push({ s, pt });
+    }
+    const safeHere = !threatened(pos, m.to);
+    if (targets.length >= 2 && safeHere) {
+      reasons.push(`Đòn chĩa: ${nm} tấn công cùng lúc ${targets.map((x) => NAME[x.pt] + ' ' + sqName(x.s)).join(' và ')}. Đối phương không thể cứu hết.`);
+    } else if (targets.length === 1 && targets[0].pt !== 'k' && safeHere) {
+      reasons.push(`Đe dọa ăn ${NAME[targets[0].pt]} ở ${sqName(targets[0].s)}.`);
+    }
+    if (wasThreat && safeHere && !m.cap) reasons.push(`Đưa ${nm} thoát khỏi chỗ đang bị tấn công.`);
+    const saved = hangBefore.filter((s) => s !== m.to && pos.b[s] && !threatened(pos, s));
+    if (saved.length && !m.cap) reasons.push(`Bảo vệ ${pname(pos.b[saved[0]])} ở ${sqName(saved[0])} đang bị đe dọa.`);
+    const backRank = us === 'w' ? 7 : 0;
+    if ((t === 'n' || t === 'b') && (m.from >> 3) === backRank && pos.full <= 15) reasons.push(`Phát triển ${nm} ra trận, sẵn sàng tham chiến.`);
+    if (t === 'p' && centre.includes(m.to)) reasons.push('Chiếm trung tâm bàn cờ, tạo không gian cho các quân khác.');
+    if (!safeHere && !check && t !== 'k') reasons.push(`Lưu ý: ${nm} ở ${sqName(m.to)} có thể bị bắt, nhưng máy tính tính được nước này vẫn tốt.`);
+    pos.unmake();
+    if (!reasons.length) {
+      if (t === 'k') reasons.push('Đưa Vua đến gần hơn để hỗ trợ (trong tàn cuộc Vua là một quân chiến đấu).');
+      else if (t === 'p') reasons.push('Đẩy Tốt lên, giành thêm không gian.');
+      else if (t === 'r') reasons.push('Đưa Xe đến hàng hoặc cột tốt hơn, giúp Xe hoạt động mạnh hơn.');
+      else reasons.push(`Đưa ${nm} đến vị trí hoạt động tốt hơn.`);
+    }
+    return reasons;
+  }
+  // threats the opponent makes right now against `color` (it is `color`'s turn)
+  function threatsAgainst(pos, color) {
+    const out = [];
+    for (const s of hangingPieces(pos, color)) {
+      const by = pos.attackers(s, opp(color)).sort((a, c) => (VAL[pos.b[a].toLowerCase()] || 2000) - (VAL[pos.b[c].toLowerCase()] || 2000))[0];
+      out.push({ sq: s, piece: pos.b[s], by, byPiece: pos.b[by] });
+    }
+    return out;
+  }
+  function moveText(m) {
+    if (m.fl === 3) return 'Nhập thành cánh Vua (O-O)';
+    if (m.fl === 4) return 'Nhập thành cánh Hậu (O-O-O)';
+    return `${NAME[m.p.toLowerCase()]} ${sqName(m.from)} → ${sqName(m.to)}${m.promo ? ' (phong ' + NAME[m.promo] + ')' : ''}`;
+  }
+  function gameStatus(pos, keys) {
+    const legal = pos.legal();
+    if (!legal.length) return pos.inCheck() ? { over: true, result: pos.turn === 'w' ? 'black' : 'white', reason: 'mate' } : { over: true, result: 'draw', reason: 'stalemate' };
+    // insufficient material
+    const pcs = pos.b.filter((p) => p && p.toLowerCase() !== 'k');
+    if (pos.kw >= 0 && pos.kb >= 0 && (pcs.length === 0 || (pcs.length === 1 && 'nbNB'.includes(pcs[0])))) return { over: true, result: 'draw', reason: 'material' };
+    if (pos.half >= 100) return { over: true, result: 'draw', reason: 'fifty' };
+    if (keys) { const k = pos.key(); if (keys.filter((x) => x === k).length >= 3) return { over: true, result: 'draw', reason: 'repetition' }; }
+    return { over: false };
+  }
+
+  return { Position, START, VAL, NAME, MATE, sqName, sqIdx, uci, colorOf, opp, evaluate, think, rootScores, scoreMove, botMove, explain, threatsAgainst, threatened, hangingPieces, moveText, gameStatus };
+})();
+if (typeof module !== 'undefined') module.exports = Engine;
+
+/* ===== Course content: 6 levels ===== */
+const LEVELS = [
+  {
+    id: 1, name: 'Làm quen quân cờ', short: 'Bàn cờ và cách đi của từng quân',
+    intro: 'Dành cho người chưa biết gì. Bạn sẽ biết bàn cờ, giá trị và cách di chuyển của 6 loại quân.',
+    steps: [
+      { type: 'info', title: 'Bàn cờ', fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        marks: ['a1', 'h1', 'a8', 'h8'],
+        text: '<p>Bàn cờ có <b>64 ô</b>, xếp thành 8 hàng (đánh số <b>1 → 8</b>) và 8 cột (chữ <b>a → h</b>). Mỗi ô có một tên riêng, ví dụ góc dưới bên trái là <b>a1</b>.</p><p>Bạn cầm <b>quân Trắng</b>, ở phía dưới, và luôn <b>đi trước</b>. Hai bên lần lượt đi mỗi bên một nước.</p><p>Mẹo nhớ: ô ở góc dưới bên phải (h1) luôn là <b>ô màu sáng</b>. Hậu trắng đứng ở ô sáng d1, Hậu đen ở ô tối d8: "Hậu đứng đúng màu của mình".</p>' },
+      { type: 'info', title: 'Giá trị các quân', fen: '4k3/8/8/8/8/8/8/R1BQKBNR w - - 0 1',
+        text: '<p>Mỗi quân có một "giá trị" để bạn biết khi nào đổi quân là có lời:</p><table class="vtab"><tr><td><span class="g">♟</span> Tốt</td><td>1 điểm</td></tr><tr><td><span class="g">♞</span> Mã</td><td>3 điểm</td></tr><tr><td><span class="g">♝</span> Tượng</td><td>3 điểm</td></tr><tr><td><span class="g">♜</span> Xe</td><td>5 điểm</td></tr><tr><td><span class="g">♛</span> Hậu</td><td>9 điểm</td></tr><tr><td><span class="g">♚</span> Vua</td><td>vô giá</td></tr></table><p>Mất Vua là thua, nên mục tiêu của ván cờ là <b>chiếu hết</b> Vua đối phương. Các bài tiếp theo sẽ dạy cách đi của từng quân.</p>' },
+      { type: 'stars', title: 'Quân Xe', only: 'R', fen: '8/8/8/8/8/8/8/R7 w - - 0 1', stars: ['a6', 'f6', 'f2', 'h2'],
+        text: '<p><b>Xe</b> đi theo đường thẳng: dọc hoặc ngang, bao nhiêu ô cũng được, nhưng không nhảy qua quân khác.</p><p>Hãy dùng Xe ăn hết các <b>ngôi sao</b>. Bấm vào Xe, rồi bấm vào ô muốn đến (hoặc kéo thả).</p>',
+        hint: 'Đi thẳng lên a6, rồi sang ngang tới f6.' },
+      { type: 'stars', title: 'Quân Tượng', only: 'B', fen: '8/8/8/8/8/8/8/2B5 w - - 0 1', stars: ['e3', 'g5', 'd8', 'a5'],
+        text: '<p><b>Tượng</b> đi theo đường chéo, bao nhiêu ô cũng được. Vì đi chéo nên Tượng <b>luôn ở một màu ô</b>: Tượng ô tối mãi mãi ở ô tối.</p><p>Hãy ăn hết các ngôi sao.</p>',
+        hint: 'Từ c1 đi chéo lên e3, rồi tiếp tục chéo lên g5.' },
+      { type: 'stars', title: 'Quân Hậu', only: 'Q', fen: '8/8/8/8/8/8/8/3Q4 w - - 0 1', stars: ['d5', 'g8', 'b3', 'h3'],
+        text: '<p><b>Hậu</b> là quân mạnh nhất: đi như Xe <b>cộng</b> Tượng, tức là đi thẳng và đi chéo, bao nhiêu ô cũng được.</p><p>Hãy ăn hết các ngôi sao với ít nước nhất có thể.</p>',
+        hint: 'd1 → d5 → g8 (chéo) → b3 (chéo ngược lại) → h3.' },
+      { type: 'stars', title: 'Quân Vua', only: 'K', fen: '8/8/8/8/8/8/8/4K3 w - - 0 1', stars: ['d2', 'c3', 'c4', 'd5'],
+        text: '<p><b>Vua</b> đi theo mọi hướng nhưng chỉ <b>1 ô</b> mỗi nước. Vua không bao giờ được đi vào ô đang bị quân đối phương tấn công.</p><p>Hãy đưa Vua ăn các ngôi sao.</p>',
+        hint: 'Mỗi nước Vua chỉ đi 1 ô: e1 → d2 → c3 → c4 → d5.' },
+      { type: 'stars', title: 'Quân Mã', only: 'N', fen: '8/8/8/8/8/8/PPPP4/1N6 w - - 0 1', stars: ['c3', 'd5', 'f6', 'h7'],
+        text: '<p><b>Mã</b> đi hình chữ <b>L</b>: 2 ô theo một hướng rồi rẽ 1 ô. Mã là quân duy nhất <b>nhảy qua được</b> quân khác (để ý Mã nhảy qua hàng Tốt).</p><p>Hãy ăn hết các ngôi sao.</p>',
+        hint: 'b1 → c3 → d5 → f6 → h7, mỗi bước đều là hình chữ L.' },
+      { type: 'stars', title: 'Quân Tốt', only: 'P', fen: '8/8/8/8/8/8/4P3/8 w - - 0 1', stars: ['e4', 'e5', 'e6'],
+        text: '<p><b>Tốt</b> chỉ đi thẳng về phía trước, mỗi lần 1 ô. Riêng <b>nước đầu tiên</b>, Tốt được chọn đi 1 hoặc 2 ô. Tốt không bao giờ đi lùi.</p><p>Hãy đẩy Tốt ăn các ngôi sao (gợi ý: lần đầu đi 2 ô cho nhanh).</p>',
+        hint: 'Nước đầu đi thẳng e2 → e4.' },
+      { type: 'stars', title: 'Tốt ăn chéo', only: 'P', captureAll: true, fen: '8/8/8/2p5/3p4/4p3/3P4/8 w - - 0 1', stars: [],
+        text: '<p>Điểm đặc biệt: Tốt đi thẳng nhưng <b>ăn chéo</b>, ăn quân ở ô chéo phía trước 1 ô.</p><p>Hãy dùng Tốt trắng ăn hết 3 quân Tốt đen.</p>',
+        hint: 'd2 ăn chéo sang e3, rồi từ e3 ăn chéo sang d4.' },
+      { type: 'stars', title: 'Hậu đi săn', only: 'Q', captureAll: true, fen: '1r6/8/3n4/8/1b6/8/7p/3Q4 w - - 0 1', stars: [],
+        text: '<p>Các quân (trừ Tốt) ăn quân đối phương bằng cách đi vào đúng ô quân đó đang đứng, theo đúng cách đi của mình.</p><p>Hãy dùng Hậu ăn hết 4 quân đen. Thứ tự rất quan trọng!</p>',
+        hint: 'Ăn Mã d6 trước, rồi Tượng b4 (chéo), rồi Xe b8, cuối cùng chéo xuống h2.' },
+      { type: 'game', title: 'Trò chơi: Cuộc đua Tốt', fen: '8/pppppppp/8/8/8/8/PPPPPPPP/8 w - - 0 1', goal: 'promote',
+        bot: { depth: 2, noise: 60, blunder: 0.12 }, coach: 'auto',
+        text: '<p>Trò chơi khởi động: chỉ có Tốt. Ai đưa được <b>một Tốt về hàng cuối</b> của đối phương trước là <b>thắng</b>.</p><p>Nhớ: Tốt đi thẳng, ăn chéo, nước đầu được đi 2 ô. Huấn luyện viên sẽ gợi ý nước đi bằng mũi tên vàng.</p>' }
+    ]
+  },
+  {
+    id: 2, name: 'Luật chơi quan trọng', short: 'Chiếu, chiếu hết, nhập thành, phong cấp',
+    intro: 'Những luật mà người mới hay quên: chiếu, chiếu hết, hòa pat, nhập thành, phong cấp và bắt tốt qua đường.',
+    steps: [
+      { type: 'info', title: 'Chiếu là gì?', fen: '4k3/8/8/8/8/8/8/4R1K1 b - - 0 1', arrows: [['e1', 'e8']], marks: ['e8'],
+        text: '<p>Khi một quân tấn công Vua, ta gọi là <b>chiếu</b>. Ở đây Xe trắng e1 đang chiếu Vua đen e8.</p><p>Bên bị chiếu <b>bắt buộc</b> phải thoát chiếu ngay, bằng 1 trong 3 cách:</p><ol><li><b>Chạy</b>: đưa Vua sang ô an toàn.</li><li><b>Chặn</b>: đặt một quân vào giữa.</li><li><b>Ăn</b>: bắt quân đang chiếu.</li></ol>' },
+      { type: 'puzzle', title: 'Hãy chiếu Vua', goal: 'check', fen: '4k3/8/8/8/8/8/8/R5K1 w - - 0 1',
+        text: '<p>Hãy đi một nước <b>chiếu</b> Vua đen. Có nhiều cách đúng!</p>',
+        hint: 'Xe đi thẳng lên a8 sẽ tấn công Vua theo hàng ngang.', hintMove: 'a1a8', success: 'Đúng rồi! Xe đang chiếu Vua đen.' },
+      { type: 'puzzle', title: 'Thoát chiếu bằng cách ăn', goal: 'line', solution: ['a1e1'], fen: '6k1/5ppp/8/8/8/8/5PPP/R3r1K1 w - - 0 1',
+        text: '<p>Xe đen e1 đang <b>chiếu</b> Vua trắng! Vua không chạy được (ô f1, h1 đều bị Xe đen kiểm soát). Hãy thoát chiếu bằng cách <b>ăn quân đang chiếu</b>.</p>',
+        hint: 'Xe a1 của bạn đi dọc hàng 1 tới e1.', success: 'Tuyệt! Ăn quân đang chiếu thường là cách thoát chiếu tốt nhất.' },
+      { type: 'puzzle', title: 'Chiếu hết hàng cuối', goal: 'mate', fen: '6k1/5ppp/8/8/8/8/5PPP/3R2K1 w - - 0 1',
+        text: '<p><b>Chiếu hết</b> = chiếu mà đối phương không còn cách nào thoát. Chiếu hết là <b>thắng</b>.</p><p>Vua đen bị chính 3 Tốt của mình chặn đường. Hãy chiếu hết trong 1 nước!</p>',
+        hint: 'Đưa Xe lên hàng cuối (hàng 8).', hintMove: 'd1d8', success: 'Chiếu hết! Đây là đòn "chiếu hết hàng cuối" rất phổ biến.' },
+      { type: 'puzzle', title: 'Chiếu hết bằng Hậu', goal: 'mate', fen: 'k7/8/1K6/8/8/8/8/6Q1 w - - 0 1',
+        text: '<p>Vua trắng b6 đang chặn các ô a7, b7. Hãy dùng Hậu chiếu hết Vua đen trong 1 nước.</p>',
+        hint: 'Hậu lên hàng 8 sẽ chiếu Vua, mà Vua đen không còn ô nào để chạy.', hintMove: 'g1g8', success: 'Chiếu hết! Vua và Hậu phối hợp rất mạnh.' },
+      { type: 'puzzle', title: 'Cẩn thận: Hòa pat', goal: 'mate', fen: 'k7/8/1K6/8/8/8/8/2Q5 w - - 0 1',
+        text: '<p><b>Hòa pat</b>: nếu đến lượt đối phương mà họ <b>không bị chiếu</b> nhưng <b>không còn nước đi hợp lệ</b>, ván cờ <b>HÒA</b>. Đây là cái bẫy lớn khi bạn đang thắng!</p><p>Hãy chiếu hết trong 1 nước, đừng để hòa pat (ví dụ Hậu c7 là hòa pat).</p>',
+        hint: 'Hậu lên hàng 8 sẽ chiếu Vua.', hintMove: 'c1c8', success: 'Chiếu hết! Bạn đã tránh được bẫy hòa pat.' },
+      { type: 'puzzle', title: 'Nhập thành', goal: 'castle', fen: '4k3/pppppppp/8/8/8/8/PPPPPPPP/R3K2R w KQ - 0 1',
+        text: '<p><b>Nhập thành</b> là nước đặc biệt duy nhất mà 2 quân cùng đi: Vua đi 2 ô về phía Xe, Xe nhảy sang ô bên kia Vua.</p><p>Điều kiện: Vua và Xe đó <b>chưa đi lần nào</b>, giữa chúng <b>không có quân</b>, Vua <b>không đang bị chiếu</b> và không đi qua ô bị tấn công.</p><p>Hãy nhập thành: bấm vào Vua rồi bấm ô g1 (hoặc c1).</p>',
+        hint: 'Đi Vua e1 → g1, Xe h1 sẽ tự nhảy sang f1.', hintMove: 'e1g1', success: 'Chuẩn! Sau khi nhập thành, Vua an toàn trong góc và Xe ra trung tâm.' },
+      { type: 'puzzle', title: 'Phong cấp', goal: 'promote', fen: '8/4P3/8/8/8/2k5/8/4K3 w - - 0 1',
+        text: '<p>Khi Tốt đi đến <b>hàng cuối</b>, nó được <b>phong cấp</b> thành Hậu, Xe, Tượng hoặc Mã (hầu như luôn chọn Hậu).</p><p>Hãy phong cấp Tốt e7!</p>',
+        hint: 'Đẩy Tốt e7 lên e8 và chọn Hậu.', hintMove: 'e7e8q', success: 'Tốt đã thành Hậu! Một quân 1 điểm vừa biến thành 9 điểm.' },
+      { type: 'puzzle', title: 'Bắt tốt qua đường', goal: 'ep', fen: '4k3/8/8/3pP3/8/8/8/4K3 w - d6 0 1', lastMove: ['d7', 'd5'],
+        text: '<p>Tốt đen vừa đi 2 ô từ d7 xuống d5, đứng ngay cạnh Tốt e5 của bạn. Luật <b>bắt tốt qua đường</b>: bạn được ăn nó như thể nó chỉ đi 1 ô, bằng cách đi chéo sang <b>d6</b>.</p><p>Chỉ được làm <b>ngay nước kế tiếp</b>, chờ thêm là mất quyền. Hãy thử!</p>',
+        hint: 'Tốt e5 đi chéo sang d6, Tốt đen d5 sẽ bị bắt.', hintMove: 'e5d6', success: 'Chính xác! Tốt đen d5 đã bị bắt qua đường.' },
+      { type: 'game', title: 'Thực hành: Chiếu hết bằng 2 Xe', fen: '4k3/8/8/8/8/8/8/R3K2R w - - 0 1', goal: 'mate',
+        bot: { depth: 2 }, coach: 'auto',
+        text: '<p>Kỹ thuật <b>"cái thang"</b>: hai Xe thay nhau chiếu, đẩy Vua đen lùi dần về mép bàn cờ: một Xe giữ hàng, Xe kia chiếu ở hàng kế tiếp.</p><p>Hãy chiếu hết Vua đen! Cẩn thận đừng để Xe đứng cạnh Vua đen mà không được bảo vệ.</p>' }
+    ]
+  },
+  {
+    id: 3, name: 'Khai cuộc đúng cách', short: 'Trung tâm, phát triển quân, nhập thành',
+    intro: 'Mười nước đầu quyết định rất nhiều. Học 3 nguyên tắc vàng và chơi ván đầu tiên có huấn luyện viên đi cùng.',
+    steps: [
+      { type: 'info', title: '3 nguyên tắc vàng', fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', marks: ['d4', 'e4', 'd5', 'e5'],
+        text: '<ol><li><b>Chiếm trung tâm</b>: 4 ô d4, e4, d5, e5 (đang được đánh dấu). Quân ở trung tâm kiểm soát nhiều ô nhất.</li><li><b>Phát triển Mã và Tượng</b>: đưa chúng ra khỏi hàng cuối càng sớm càng tốt.</li><li><b>Nhập thành sớm</b>: đưa Vua vào nơi an toàn, kết nối hai Xe.</li></ol><p>Thêm 3 điều nên tránh: đừng đưa Hậu ra quá sớm, đừng đi một quân hai lần khi chưa cần, đừng đẩy quá nhiều Tốt ở cánh.</p>' },
+      { type: 'puzzle', title: 'Nước đi đầu tiên', goal: 'accept', accept: ['e2e4', 'd2d4'], fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1',
+        text: '<p>Hãy chọn một nước đi đầu tiên giúp <b>chiếm trung tâm</b> mạnh mẽ nhất.</p>',
+        wrong: { g1f3: 'Mã f3 là nước tốt, nhưng bài này hãy dùng Tốt chiếm thẳng trung tâm.', c2c4: 'c4 kiểm soát d5 từ xa. Bài này hãy chiếm thẳng trung tâm bằng Tốt.' },
+        hint: 'Đẩy Tốt e hoặc Tốt d lên 2 ô.', hintMove: 'e2e4', success: 'Tuyệt! Tốt đã chiếm trung tâm, đồng thời mở đường cho Hậu và Tượng.' },
+      { type: 'puzzle', title: 'Phát triển Mã', goal: 'accept', accept: ['g1f3'], fen: 'rnbqkbnr/pppp1ppp/8/4p3/4P3/8/PPPP1PPP/RNBQKBNR w KQkq e6 0 2', lastMove: ['e7', 'e5'],
+        text: '<p>Sau 1.e4 e5, hãy phát triển một quân <b>vừa ra trận vừa tấn công</b> Tốt e5 của đen.</p>',
+        wrong: { d1h5: 'Hậu ra sớm dễ bị đối phương đuổi đánh và mất nhịp. Hãy phát triển Mã.', f1c4: 'Tượng c4 tốt, nhưng có nước vừa phát triển vừa tấn công Tốt e5.', b1c3: 'Mã c3 tốt, nhưng Mã g1 có thể tấn công Tốt e5 ngay.' },
+        hint: 'Mã g1 nhảy ra f3.', hintMove: 'g1f3', success: 'Chuẩn! Mã f3 tấn công e5 và chuẩn bị cho việc nhập thành.' },
+      { type: 'puzzle', title: 'Tượng nhắm vào f7', goal: 'accept', accept: ['f1c4', 'f1b5'], fen: 'r1bqkbnr/pppp1ppp/2n5/4p3/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3', lastMove: ['b8', 'c6'],
+        text: '<p>Đen đã bảo vệ e5 bằng Mã c6. Giờ hãy phát triển <b>Tượng</b> tới ô tích cực, tốt nhất là nhắm vào điểm yếu <b>f7</b> (chỉ có Vua đen bảo vệ).</p>',
+        hint: 'Tượng f1 đi chéo tới c4.', hintMove: 'f1c4', success: 'Đẹp! Đây là khai cuộc Ý (Italian Game), một trong những khai cuộc lâu đời nhất.' },
+      { type: 'puzzle', title: 'Nhập thành sớm', goal: 'castle', fen: 'r1bqk1nr/pppp1ppp/2n5/2b1p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4', lastMove: ['f8', 'c5'],
+        text: '<p>Mã và Tượng cánh Vua đã ra trận, đường giữa Vua và Xe h1 đã trống. Đây là lúc đưa Vua vào nơi an toàn!</p>',
+        hint: 'Vua e1 → g1.', hintMove: 'e1g1', success: 'Hoàn hảo! Sau 4 nước: chiếm trung tâm, phát triển 2 quân, Vua đã an toàn.' },
+      { type: 'puzzle', title: 'Trừng phạt sai lầm', goal: 'mate', fen: 'r1bqkb1r/pppp1ppp/2n2n2/4p2Q/2B1P3/8/PPPP1PPP/RNB1K1NR w KQkq - 4 4', lastMove: ['g8', 'f6'],
+        text: '<p>Đen vừa đi Mã f6 tấn công Hậu, nhưng quên mất điểm yếu <b>f7</b>! Hậu và Tượng c4 cùng nhắm vào f7. Hãy chiếu hết trong 1 nước.</p><p>(Đây là "chiếu hết 4 nước", nhưng đừng tự đi Hậu sớm như vậy với đối thủ giỏi, họ sẽ phòng thủ được.)</p>',
+        hint: 'Hậu ăn Tốt f7, được Tượng c4 bảo vệ.', hintMove: 'h5f7', success: 'Chiếu hết! Hãy luôn bảo vệ điểm f7 (f2) của chính mình.' },
+      { type: 'game', title: 'Ván cờ có hướng dẫn', fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', goal: 'win',
+        bot: { depth: 1, noise: 120, blunder: 0.3 }, coach: 'auto',
+        text: '<p>Ván cờ đầy đủ với một đối thủ mới tập chơi. Huấn luyện viên sẽ <b>gợi ý mọi nước đi</b> (mũi tên vàng) và giải thích lý do.</p><p>Hãy áp dụng 3 nguyên tắc vàng, ăn những quân đối phương bỏ quên và chiếu hết!</p>' }
+    ]
+  },
+  {
+    id: 4, name: 'Đòn chiến thuật', short: 'Chĩa, ghim, xiên, ăn quân hở',
+    intro: 'Phần lớn ván cờ ở trình độ mới chơi được quyết định bởi chiến thuật. Học các đòn kinh điển để thắng quân.',
+    steps: [
+      { type: 'info', title: 'Tìm quân "hở"', fen: 'rnb1kbnr/pppp1ppp/8/4p1q1/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3', marks: ['g5'],
+        text: '<p>Quân <b>"hở"</b> là quân bị tấn công mà <b>không được bảo vệ</b>. Trước mỗi nước đi, hãy tự hỏi 3 câu:</p><ol><li>Có nước <b>chiếu</b> nào không?</li><li>Có quân đối phương nào <b>hở</b> không, ăn được không?</li><li>Đối phương đang <b>đe dọa</b> quân nào của mình?</li></ol><p>Thế cờ bên cạnh: Hậu đen g5 đang hở. Bấm "Tiếp tục" để thử ăn nó.</p>' },
+      { type: 'puzzle', title: 'Ăn quân hở', goal: 'line', solution: ['f3g5'], fen: 'rnb1kbnr/pppp1ppp/8/4p1q1/4P3/5N2/PPPP1PPP/RNBQKB1R w KQkq - 2 3',
+        text: '<p>Hậu đen g5 không được bảo vệ. Quân nào của bạn có thể ăn nó?</p>',
+        hint: 'Mã f3 nhảy hình chữ L tới g5.', success: 'Thắng ngay một Hậu (9 điểm)! Luôn quét xem đối phương bỏ quên quân nào.' },
+      { type: 'puzzle', title: 'Đòn chĩa (Mã)', goal: 'line', solution: ['d5c7', null, 'c7a8'], fen: 'r3kb1r/ppp2ppp/8/3N4/8/8/PPP2PPP/R3KB1R w KQkq - 0 1',
+        text: '<p><b>Đòn chĩa</b>: một quân tấn công <b>hai quân</b> cùng lúc. Mã là chuyên gia chĩa vì đi hình chữ L khó lường.</p><p>Hãy tìm nước Mã vừa <b>chiếu Vua</b> vừa tấn công Xe a8, rồi thu Xe.</p>',
+        hint: 'Mã d5 ăn Tốt c7: chiếu Vua e8 và tấn công Xe a8.', success: 'Đòn chĩa hoàn hảo! Đen buộc phải cứu Vua và mất Xe.' },
+      { type: 'puzzle', title: 'Đòn chĩa (Tốt)', goal: 'line', solution: ['d3d4'], fen: '6k1/5ppp/8/2b1n3/8/3PP3/5PPP/6K1 w - - 0 1',
+        text: '<p>Ngay cả Tốt cũng biết chĩa! Tượng c5 và Mã e5 của đen đứng cách nhau 2 ô. Tìm nước Tốt tấn công cả hai.</p>',
+        hint: 'Tốt d3 tiến lên d4, được Tốt e3 bảo vệ.', success: 'Tốt (1 điểm) tấn công hai quân 3 điểm. Đen chắc chắn mất một quân!' },
+      { type: 'puzzle', title: 'Đòn ghim', goal: 'line', solution: ['f2f4'], fen: '4k3/8/3p4/4n3/8/8/5PPP/4R1K1 w - - 0 1',
+        text: '<p><b>Đòn ghim</b>: quân đối phương không dám (hoặc không được) di chuyển vì phía sau nó là quân quý hơn. Mã e5 đang bị <b>ghim</b> vào Vua e8 bởi Xe e1: nếu Mã đi, Vua bị chiếu, nên Mã không được đi.</p><p>Hãy tấn công quân bị ghim!</p>',
+        hint: 'Đẩy Tốt f2 lên f4 để tấn công Mã.', success: 'Mã bị ghim không chạy được. Đen sẽ mất Mã!' },
+      { type: 'puzzle', title: 'Đòn xiên', goal: 'line', solution: ['a6b7', null, 'b7h1'], fen: '8/8/B7/3k4/8/1K6/8/7q w - - 0 1',
+        text: '<p><b>Đòn xiên</b> ngược với đòn ghim: tấn công quân quý (thường là Vua) ở phía trước; khi nó tránh đi, ta ăn quân ở phía sau.</p><p>Vua đen d5 và Hậu h1 nằm trên cùng một đường chéo. Hãy chiếu Vua rồi ăn Hậu!</p>',
+        hint: 'Tượng a6 lên b7 chiếu Vua trên đường chéo dài.', success: 'Đòn xiên thành công! Thắng Hậu đen.' },
+      { type: 'puzzle', title: 'Phá thế phòng thủ', goal: 'line', solution: ['d2d8', null, 'd1d8'], fen: 'r2r2k1/5ppp/8/8/8/8/3R1PPP/3R2K1 w - - 0 1',
+        text: '<p>Hai Xe trắng xếp chồng trên cột d (gọi là "xếp đôi Xe"). Xe đen d8 đang một mình canh hàng cuối. Hãy chiếu hết trong 2 nước!</p>',
+        hint: 'Đổi Xe trên d8 trước, rồi Xe còn lại xuống hàng cuối.', success: 'Chiếu hết! Hai Xe xếp đôi trên cột mở rất mạnh.' },
+      { type: 'game', title: 'Thực chiến chiến thuật', fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', goal: 'win',
+        bot: { depth: 2, noise: 50, blunder: 0.15 }, coach: 'auto',
+        text: '<p>Đối thủ đã khá hơn, đôi khi vẫn sơ hở. Huấn luyện viên sẽ <b>cảnh báo khi quân của bạn bị đe dọa</b> và gợi ý đòn chiến thuật khi có cơ hội.</p><p>Mỗi nước: kiểm tra chiếu, ăn quân, đe dọa!</p>' }
+    ]
+  },
+  {
+    id: 5, name: 'Tàn cuộc', short: 'Chiếu hết bằng Hậu, Xe và đưa Tốt về đích',
+    intro: 'Khi còn ít quân, bạn cần kỹ thuật để biến lợi thế thành chiến thắng. Đây là phần nhiều người bỏ qua nhất.',
+    steps: [
+      { type: 'info', title: 'Tàn cuộc là gì?', fen: '8/8/8/4k3/8/8/8/3QK3 w - - 0 1',
+        text: '<p><b>Tàn cuộc</b> là giai đoạn cuối, khi phần lớn quân đã bị đổi. Hai điều cần nhớ:</p><ol><li><b>Vua trở thành quân chiến đấu</b>: hãy đưa Vua lên trung tâm để giúp.</li><li><b>Tốt rất quý</b>: mỗi Tốt có thể thành Hậu.</li></ol><p>Kỹ thuật chiếu hết bằng Hậu: dùng Hậu <b>thu hẹp "hộp"</b> của Vua đen (đi nước Mã cách Vua đen), đưa Vua trắng lại gần, rồi chiếu hết ở mép bàn. Luôn kiểm tra đen còn nước đi, tránh <b>hòa pat</b>!</p>' },
+      { type: 'game', title: 'Chiếu hết: Hậu + Vua', fen: '8/8/8/4k3/8/8/8/3QK3 w - - 0 1', goal: 'mate',
+        bot: { depth: 2 }, coach: 'auto',
+        text: '<p>Hãy chiếu hết Vua đen bằng Hậu và Vua. Quy trình:</p><ol><li>Hậu đứng cách Vua đen một nước Mã để nhốt nó.</li><li>Hậu đi theo, ép Vua đen về mép.</li><li>Đưa Vua trắng lại gần.</li><li>Chiếu hết.</li></ol>' },
+      { type: 'game', title: 'Chiếu hết: Xe + Vua', fen: '8/8/8/4k3/8/8/8/4K2R w - - 0 1', goal: 'mate',
+        bot: { depth: 2 }, coach: 'auto',
+        text: '<p>Khó hơn Hậu một chút: Xe cắt Vua đen theo hàng hoặc cột, Vua trắng đi lên <b>đối diện</b> Vua đen, rồi Xe chiếu để đẩy Vua đen lùi một hàng. Lặp lại tới mép bàn.</p><p>Cẩn thận: Xe đứng sát Vua đen mà không được bảo vệ sẽ bị ăn!</p>' },
+      { type: 'puzzle', title: 'Quy tắc hình vuông', goal: 'line', solution: ['g2g4'], fen: '8/8/1k6/8/8/8/6P1/K7 w - - 0 1',
+        text: '<p>Vua đen có đuổi kịp Tốt không? Vẽ một hình vuông từ Tốt tới hàng cuối: nếu Vua đen <b>không bước vào được</b> hình vuông đó, Tốt sẽ về đích.</p><p>Hãy chọn nước đi giúp Tốt chắc chắn thành Hậu.</p>',
+        hint: 'Dùng quyền đi 2 ô ở nước đầu: g2 → g4.', success: 'Đúng! Đi 2 ô làm hình vuông nhỏ lại, Vua đen không kịp đuổi.' },
+      { type: 'game', title: 'Tàn cuộc Tốt: Vua dẫn đường', fen: '4k3/8/4K3/4P3/8/8/8/8 w - - 0 1', goal: 'promote',
+        bot: { depth: 3 }, coach: 'auto',
+        text: '<p>Nguyên tắc vàng của tàn cuộc Tốt: <b>Vua đi trước, Tốt theo sau</b>. Vua trắng đã ở hàng 6, phía trước Tốt: đây là thế thắng nếu bạn đi chính xác.</p><p>Hãy đưa Tốt về hàng 8. Cảnh giác hòa pat!</p>' },
+      { type: 'game', title: 'Ván đấu tổng hợp', fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', goal: 'win',
+        bot: { depth: 2, noise: 25, blunder: 0.06 }, coach: 'ask',
+        text: '<p>Ván cờ đầy đủ. Lần này huấn luyện viên <b>chỉ gợi ý khi bạn bấm "Gợi ý"</b>, nhưng vẫn nhận xét mỗi nước đi của bạn.</p><p>Hãy tự suy nghĩ trước, chỉ hỏi khi bí. Khi hơn quân, hãy đổi quân và đưa ván cờ về tàn cuộc dễ thắng.</p>' }
+    ]
+  },
+  {
+    id: 6, name: 'Thực chiến', short: 'Ván đấu thật với đối thủ mạnh dần',
+    intro: 'Áp dụng tất cả. Ba đối thủ mạnh dần, huấn luyện viên vẫn ngồi cạnh để nhận xét và gợi ý khi bạn cần.',
+    steps: [
+      { type: 'info', title: 'Quy trình suy nghĩ', fen: 'r1bqkb1r/pppp1ppp/2n2n2/4p3/2B1P3/5N2/PPPP1PPP/RNBQK2R w KQkq - 4 4',
+        text: '<p>Trước <b>mỗi</b> nước đi, kỳ thủ giỏi làm 4 bước:</p><ol><li><b>Đối thủ vừa định làm gì?</b> Họ đe dọa ăn quân nào, chiếu ở đâu?</li><li><b>Tìm nước mạnh</b>: chiếu, ăn quân, đe dọa (theo thứ tự đó).</li><li><b>Nếu không có đòn</b>: đưa quân kém hoạt động nhất vào trận.</li><li><b>Kiểm tra lần cuối</b>: nước mình định đi có để hở quân nào không?</li></ol><p>Huấn luyện viên sẽ chấm từng nước: <span class="tag good">Tốt nhất</span> <span class="tag ok">Tốt</span> <span class="tag warn">Không chính xác</span> <span class="tag bad">Sai lầm</span>.</p>' },
+      { type: 'game', title: 'Đối thủ 1: Vừa sức', fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', goal: 'win',
+        bot: { depth: 2, noise: 15 }, coach: 'ask',
+        text: '<p>Đối thủ chơi chắc chắn, ít sơ hở. Bấm <b>"Gợi ý"</b> khi cần, và dùng <b>"Đi lại"</b> để học từ sai lầm.</p>' },
+      { type: 'game', title: 'Đối thủ 2: Khá', fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', goal: 'win',
+        bot: { depth: 3, timeMs: 900 }, coach: 'ask',
+        text: '<p>Đối thủ nhìn trước 3 nước và sẽ trừng phạt quân hở. Chơi chắc: phát triển, nhập thành, không cho không quân nào.</p>' },
+      { type: 'game', title: 'Đối thủ 3: Thử thách cuối', fen: 'rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1', goal: 'win',
+        bot: { depth: 5, timeMs: 1600 }, coach: 'ask',
+        text: '<p>Đối thủ mạnh nhất. Thắng được ván này là bạn đã nắm vững nền tảng cờ vua. Chúc may mắn!</p>' }
+    ]
+  }
+];
+if (typeof module !== 'undefined') module.exports = LEVELS;
+
+/* ===== App: board UI, lessons, coach ===== */
+(function () {
+  'use strict';
+  const E = Engine;
+  const $ = (s, r) => (r || document).querySelector(s);
+  const GLYPH = { k: ['♚', '♔'], q: ['♛', '♕'], r: ['♜', '♖'], b: ['♝', '♗'], n: ['♞', '♘'], p: ['♟', '♙'] };
+  const STAR = '<svg class="star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2.6l2.9 6.1 6.6.8-4.9 4.6 1.3 6.6L12 17.4l-5.9 3.3 1.3-6.6-4.9-4.6 6.6-.8z"/></svg>';
+  const esc = (s) => String(s).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]));
+  const later = (fn, ms) => setTimeout(fn, ms || 30);
+
+  /* ---------- progress (per-viewer convenience) ---------- */
+  let progress = {};
+  try { progress = JSON.parse(localStorage.getItem('cvtb-progress') || '{}') || {}; } catch (e) { progress = {}; }
+  const saveProgress = () => { try { localStorage.setItem('cvtb-progress', JSON.stringify(progress)); } catch (e) { /* ignore */ } };
+  const isDone = (lv, si) => !!progress[lv + '-' + si];
+  const levelDone = (L) => L.steps.filter((_, i) => isDone(L.id, i)).length;
+
+  /* ---------- state ---------- */
+  let view = 'home', LV = null, SI = 0, S = null; // S = session
+  let drag = null;
+
+  function pieceHTML(p) {
+    const t = p.toLowerCase();
+    return p < 'a'
+      ? `<span class="pc pw"><i class="pf">${GLYPH[t][0]}</i><i class="po">${GLYPH[t][1]}</i></span>`
+      : `<span class="pc pb"><i class="pf">${GLYPH[t][0]}</i></span>`;
+  }
+  const NAMEP = (p) => E.NAME[p.toLowerCase()];
+  function mv(m) { return `<b class="mv">${esc(E.moveText(m))}</b>`; }
+
+  /* ---------- session ---------- */
+  function newSession(step) {
+    const pos = new E.Position(step.fen);
+    return {
+      step, pos, keys: [pos.key()], hist: [], feed: [], selected: -1,
+      arrows: [], lastMove: step.lastMove ? [E.sqIdx(step.lastMove[0]), E.sqIdx(step.lastMove[1])] : null,
+      stars: new Set((step.stars || []).map(E.sqIdx)), moveCount: 0, solIdx: 0, wrong: 0, hintStage: 0,
+      busy: false, status: '', done: false, over: false, analysis: null, evalScore: null, hintsUsed: 0, celebrate: false
+    };
+  }
+  function interactive() {
+    return S && S.step.type !== 'info' && !S.busy && !S.over && !(S.step.type === 'puzzle' && S.done) && S.pos.turn === 'w';
+  }
+  function legalFrom(sq) {
+    if (!S) return [];
+    const p = S.pos.b[sq];
+    if (!p || E.colorOf(p) !== 'w') return [];
+    if (S.step.only && p !== S.step.only) return [];
+    return S.pos.legal().filter((m) => m.from === sq);
+  }
+  function push(item) { S.feed.unshift(item); if (S.feed.length > 40) S.feed.length = 40; }
+
+  /* ---------- rendering ---------- */
+  function render() {
+    renderHeader();
+    $('#home').hidden = view !== 'home';
+    $('#lesson').hidden = view !== 'lesson';
+    if (view === 'home') renderHome(); else renderLesson();
+  }
+  function renderHeader() {
+    $('#lvnav').innerHTML = LEVELS.map((L) => {
+      const d = levelDone(L), n = L.steps.length, cur = view === 'lesson' && LV && LV.id === L.id;
+      return `<button class="lvchip${cur ? ' cur' : ''}${d === n ? ' full' : ''}" data-lv="${L.id}" aria-label="Cấp ${L.id}: ${esc(L.name)}"><span class="n">${L.id}</span><span class="t">${esc(L.name)}</span></button>`;
+    }).join('');
+  }
+  function nextTodo() {
+    for (const L of LEVELS) for (let i = 0; i < L.steps.length; i++) if (!isDone(L.id, i)) return [L.id, i];
+    return [6, 1];
+  }
+  function renderHome() {
+    const total = LEVELS.reduce((a, L) => a + L.steps.length, 0), done = LEVELS.reduce((a, L) => a + levelDone(L), 0);
+    const [nl, ns] = nextTodo();
+    $('#resume').textContent = done ? `Học tiếp: Cấp ${nl}, bài ${ns + 1}` : 'Bắt đầu từ Cấp 1';
+    $('#resume').dataset.go = `${nl}-${ns}`;
+    $('#overall').innerHTML = `<span class="num">${done}</span>/<span>${total}</span> bài đã hoàn thành`;
+    $('#levels').innerHTML = LEVELS.map((L) => {
+      const d = levelDone(L), n = L.steps.length, pct = Math.round((d / n) * 100);
+      const kinds = { info: 0, stars: 0, puzzle: 0, game: 0 };
+      L.steps.forEach((s) => kinds[s.type]++);
+      const meta = [kinds.info + kinds.stars ? `${kinds.info + kinds.stars} bài học` : '', kinds.puzzle ? `${kinds.puzzle} câu đố` : '', kinds.game ? `${kinds.game} ván đấu` : ''].filter(Boolean).join(' · ');
+      return `<article class="lvcard" data-lv="${L.id}" tabindex="0" role="button" aria-label="Mở cấp ${L.id}">
+        <div class="lvtop"><span class="lvno">Cấp ${L.id}</span><span class="lvstate ${d === n ? 'full' : d ? 'part' : ''}">${d === n ? 'Đã xong' : d ? 'Đang học' : 'Chưa học'}</span></div>
+        <h3>${esc(L.name)}</h3><p class="lvshort">${esc(L.short)}</p><p class="lvintro">${esc(L.intro)}</p>
+        <div class="lvfoot"><span class="lvmeta">${meta}</span><span class="bar"><i style="width:${pct}%"></i></span></div>
+      </article>`;
+    }).join('');
+  }
+  function renderLesson() {
+    const st = S.step;
+    $('#lvtitle').textContent = `Cấp ${LV.id} · ${LV.name}`;
+    $('#steps').innerHTML = LV.steps.map((s, i) => {
+      const k = { info: 'Bài học', stars: 'Luyện tập', puzzle: 'Câu đố', game: 'Ván đấu' }[s.type];
+      return `<button class="step${i === SI ? ' cur' : ''}${isDone(LV.id, i) ? ' done' : ''}" data-si="${i}"><span class="sn">${isDone(LV.id, i) ? '✓' : i + 1}</span><span class="sx"><span class="sk">${k}</span><span class="st">${esc(s.title)}</span></span></button>`;
+    }).join('');
+    const cur = $('#steps .cur'); if (cur && cur.scrollIntoView && window.innerWidth < 1100) cur.scrollIntoView({ block: 'nearest', inline: 'center' });
+    $('#stepkind').textContent = `Bài ${SI + 1}/${LV.steps.length} · ${{ info: 'Bài học', stars: 'Luyện tập', puzzle: 'Câu đố', game: 'Ván đấu' }[st.type]}`;
+    $('#steptitle').textContent = st.title;
+    $('#steptext').innerHTML = st.text;
+    renderControls();
+    renderBoard();
+    renderFeed();
+    renderMoves();
+    renderEval();
+  }
+  function renderControls() {
+    const st = S.step, t = st.type;
+    const btn = (id, label, cls, show, dis) => show ? `<button id="${id}" class="btn ${cls || ''}"${dis ? ' disabled' : ''}>${label}</button>` : '';
+    const last = SI >= LV.steps.length - 1;
+    const nextLabel = last ? (LV.id < 6 ? `Sang cấp ${LV.id + 1} →` : 'Về trang chủ') : 'Bài tiếp theo →';
+    $('#controls').innerHTML =
+      (t === 'info' ? btn('b-next', 'Tiếp tục →', 'primary', true) : '') +
+      btn('b-hint', t === 'game' ? 'Gợi ý nước đi' : 'Gợi ý', 'hint', t !== 'info', S.busy || S.over || S.done && t !== 'game') +
+      btn('b-undo', 'Đi lại', '', t === 'game', S.busy || S.hist.length < 1) +
+      btn('b-reset', t === 'game' ? 'Ván mới' : 'Làm lại', '', t !== 'info', S.busy) +
+      (t !== 'info' ? btn('b-next', nextLabel, S.done ? 'primary' : 'ghost', true) : '');
+    $('#status').innerHTML = S.status || '';
+    $('#status').hidden = !S.status;
+  }
+  function renderBoard() {
+    const pos = S.pos, board = $('#board');
+    const targets = S.selected >= 0 ? legalFrom(S.selected).map((m) => m.to) : [];
+    const checkSq = pos.inCheck('w') ? pos.kw : pos.inCheck('b') ? pos.kb : -1;
+    const marks = (S.step.marks || []).map(E.sqIdx);
+    let h = '';
+    for (let i = 0; i < 64; i++) {
+      const r = i >> 3, c = i & 7, light = (r + c) % 2 === 0, p = pos.b[i];
+      let cls = 'sq ' + (light ? 'l' : 'd');
+      if (S.lastMove && S.lastMove.includes(i)) cls += ' last';
+      if (i === S.selected) cls += ' sel';
+      if (marks.includes(i)) cls += ' mark';
+      if (i === checkSq) cls += ' check';
+      if (targets.includes(i)) cls += p ? ' cap' : ' tgt';
+      if (drag && drag.from === i && drag.moved) cls += ' lift';
+      let inner = '';
+      if (c === 0) inner += `<span class="co rk">${8 - r}</span>`;
+      if (r === 7) inner += `<span class="co fl">${'abcdefgh'[c]}</span>`;
+      if (S.stars.has(i)) inner += STAR;
+      if (p) inner += pieceHTML(p);
+      h += `<div class="${cls}" data-sq="${i}">${inner}</div>`;
+    }
+    h += arrowsSVG();
+    board.innerHTML = h;
+    board.classList.toggle('locked', !interactive());
+    board.classList.toggle('celebrate', !!S.celebrate);
+    $('#boardwrap').classList.toggle('noeval', S.step.type !== 'game' || !!S.step.goal && S.step.goal !== 'win');
+  }
+  function arrowsSVG() {
+    const list = (S.step.type === 'info' ? (S.step.arrows || []).map(([a, b]) => [E.sqIdx(a), E.sqIdx(b), 'info']) : []).concat(S.arrows);
+    if (!list.length) return '';
+    let s = '<svg class="arrows" viewBox="0 0 8 8" aria-hidden="true">';
+    for (const [f, t, kind] of list) {
+      const x1 = (f & 7) + 0.5, y1 = (f >> 3) + 0.5, x2 = (t & 7) + 0.5, y2 = (t >> 3) + 0.5;
+      const dx = x2 - x1, dy = y2 - y1, len = Math.hypot(dx, dy), ux = dx / len, uy = dy / len;
+      const hx = x2 - ux * 0.12, hy = y2 - uy * 0.12, bx = hx - ux * 0.42, by = hy - uy * 0.42;
+      const nx = -uy * 0.24, ny = ux * 0.24;
+      const sx = x1 + ux * 0.22, sy = y1 + uy * 0.22;
+      s += `<g class="arw ${kind || 'hint'}"><line x1="${sx}" y1="${sy}" x2="${bx}" y2="${by}"/><polygon points="${hx},${hy} ${bx + nx},${by + ny} ${bx - nx},${by - ny}"/></g>`;
+    }
+    return s + '</svg>';
+  }
+  const KIND = { best: 'Nước đi tốt nhất', good: 'Nước đi tốt', inacc: 'Chưa chính xác', blunder: 'Sai lầm', hint: 'Gợi ý', warn: 'Cẩn thận', win: 'Chiến thắng', lose: 'Thua', draw: 'Hòa', info: 'Huấn luyện viên', ok: 'Đúng rồi', no: 'Chưa đúng', bot: 'Đen vừa đi' };
+  function renderFeed() {
+    const f = $('#feed');
+    if (!S.feed.length) {
+      f.innerHTML = `<div class="empty">${S.step.type === 'info' ? 'Đọc phần hướng dẫn, quan sát bàn cờ, rồi bấm "Tiếp tục".' : S.step.type === 'game' ? 'Bạn đi trước. Huấn luyện viên sẽ nhận xét từng nước đi ở đây.' : 'Thực hiện nước đi trên bàn cờ. Nhận xét sẽ hiện ở đây.'}</div>`;
+      return;
+    }
+    f.innerHTML = S.feed.map((it, idx) => `<div class="fi k-${it.kind}${idx === 0 ? ' new' : ''}">
+      <div class="fh"><span class="tag ${it.kind}">${esc(it.label || KIND[it.kind] || '')}</span>${it.title ? `<span class="ft">${it.title}</span>` : ''}</div>
+      ${it.body ? `<div class="fb">${it.body}</div>` : ''}
+      ${it.actions && idx === 0 ? `<div class="fa">${it.actions.map((a, j) => `<button class="btn sm ${a.cls || ''}" data-act="${j}">${esc(a.label)}</button>`).join('')}</div>` : ''}
+    </div>`).join('');
+  }
+  function renderMoves() {
+    const box = $('#moves');
+    if (S.step.type !== 'game') { box.hidden = true; return; }
+    box.hidden = false;
+    if (!S.hist.length) { box.innerHTML = '<span class="mvempty">Chưa có nước đi nào</span>'; return; }
+    let h = '';
+    for (let i = 0; i < S.hist.length; i += 2) {
+      h += `<span class="mvn">${i / 2 + 1}.</span><span class="mw">${esc(S.hist[i].san)}</span><span class="mb">${S.hist[i + 1] ? esc(S.hist[i + 1].san) : ''}</span>`;
+    }
+    box.innerHTML = h;
+    box.scrollTop = box.scrollHeight;
+  }
+  function fmtScore(sc) {
+    if (sc == null) return '0.0';
+    if (Math.abs(sc) > E.MATE - 1000) { const n = Math.ceil((E.MATE - Math.abs(sc)) / 2); return (sc > 0 ? '' : '-') + 'M' + Math.max(1, n); }
+    return (sc > 0 ? '+' : '') + (sc / 100).toFixed(1);
+  }
+  function renderEval() {
+    const sc = S.evalScore;
+    let pct = 50;
+    if (sc != null) pct = Math.abs(sc) > E.MATE - 1000 ? (sc > 0 ? 100 : 0) : 50 + 50 * Math.tanh(sc / 600);
+    $('#evalfill').style.height = pct + '%';
+    $('#evaltxt').textContent = fmtScore(sc);
+    $('#evalbar').title = 'Đánh giá thế cờ (dương = Trắng tốt hơn): ' + fmtScore(sc);
+  }
+
+  /* ---------- navigation ---------- */
+  function openStep(lv, si, noHash) {
+    LV = LEVELS.find((L) => L.id === lv) || LEVELS[0];
+    SI = Math.max(0, Math.min(si, LV.steps.length - 1));
+    S = newSession(LV.steps[SI]);
+    view = 'lesson';
+    if (!noHash) setHash(`cap${LV.id}-bai${SI + 1}`);
+    render();
+    window.scrollTo({ top: 0 });
+    if (S.step.type === 'game' && S.step.coach === 'auto') coachTurn(null);
+  }
+  function goHome(noHash) { view = 'home'; S = null; LV = null; if (!noHash) setHash(''); render(); window.scrollTo({ top: 0 }); }
+  function setHash(h) {
+    try { if (h) history.replaceState(null, '', '#' + h); else history.replaceState(null, '', location.pathname + location.search); } catch (e) { /* ignore */ }
+  }
+  function fromHash() {
+    const m = /^#cap(\d)(?:-bai(\d+))?$/.exec(location.hash || '');
+    if (m) openStep(+m[1], m[2] ? +m[2] - 1 : 0, true); else goHome(true);
+  }
+  function markDone() {
+    if (!S.done) { S.done = true; progress[LV.id + '-' + SI] = 1; saveProgress(); }
+  }
+  function nextStep() {
+    if (S.step.type === 'info') markDone();
+    if (SI < LV.steps.length - 1) openStep(LV.id, SI + 1);
+    else if (LV.id < 6) openStep(LV.id + 1, 0);
+    else goHome();
+  }
+
+  /* ---------- moves from the board ---------- */
+  function tryMove(from, to) {
+    const cands = legalFrom(from).filter((m) => m.to === to);
+    if (!cands.length) return false;
+    S.selected = -1;
+    if (cands.length > 1 && cands[0].promo) { askPromo(cands); return true; }
+    userMove(cands[0]);
+    return true;
+  }
+  function askPromo(cands) {
+    const box = $('#promo');
+    box.innerHTML = '<div class="pbox"><p>Phong cấp thành:</p><div class="prow">' + ['q', 'r', 'b', 'n'].map((t) => `<button class="pbtn" data-pr="${t}" aria-label="${E.NAME[t]}">${pieceHTML(t.toUpperCase())}<span>${E.NAME[t]}</span></button>`).join('') + '</div></div>';
+    box.hidden = false;
+    box.onclick = (e) => {
+      const b = e.target.closest('[data-pr]'); if (!b) return;
+      box.hidden = true; box.onclick = null;
+      userMove(cands.find((m) => m.promo === b.dataset.pr));
+    };
+  }
+  function applyMove(m) {
+    const legal = S.pos.legal();
+    const san = S.pos.san(m, legal);
+    S.pos.make(m);
+    S.keys.push(S.pos.key());
+    S.hist.push({ m, san });
+    S.lastMove = [m.from, m.to];
+  }
+  function userMove(m) {
+    S.arrows = [];
+    const t = S.step.type;
+    if (t === 'stars') return starsMove(m);
+    if (t === 'puzzle') return puzzleMove(m);
+    if (t === 'game') return gameMove(m);
+  }
+
+  /* ---------- stars lessons ---------- */
+  function starsMove(m) {
+    S.pos.make(m);
+    S.pos.turn = 'w'; S.pos.ep = -1; S.pos.hist = [];
+    S.lastMove = [m.from, m.to];
+    S.moveCount++;
+    let got = false;
+    if (S.stars.has(m.to)) { S.stars.delete(m.to); got = true; }
+    const blacksLeft = S.pos.b.filter((p) => p && E.colorOf(p) === 'b').length;
+    const complete = S.stars.size === 0 && (!S.step.captureAll || blacksLeft === 0);
+    if (complete) {
+      markDone(); S.celebrate = true;
+      push({ kind: 'win', label: 'Hoàn thành', title: `Xong sau ${S.moveCount} nước`, body: 'Bạn đã nắm được cách đi của quân này. Bấm <b>"Bài tiếp theo"</b> để học tiếp.' });
+    } else if (m.cap) {
+      push({ kind: 'ok', title: `Ăn ${NAMEP(m.cap)} ở ${E.sqName(m.to)}`, body: S.step.captureAll ? `Còn ${blacksLeft} quân đen.` : '' });
+    } else if (got) {
+      push({ kind: 'ok', title: `Lấy được ngôi sao ${E.sqName(m.to)}`, body: `Còn ${S.stars.size} ngôi sao.` });
+    } else if (!S.pos.legal().some((x) => !S.step.only || x.p === S.step.only)) {
+      push({ kind: 'warn', title: 'Hết nước đi', body: 'Quân của bạn không còn đường đi. Bấm "Làm lại" để thử lại.' });
+    }
+    render();
+  }
+
+  /* ---------- puzzles ---------- */
+  function puzzleMove(m) {
+    const st = S.step, u = E.uci(m);
+    const pre = S.pos.clone();
+    applyMove(m);
+    const mate = S.pos.inCheck() && !S.pos.legal().length;
+    const stale = !S.pos.inCheck() && !S.pos.legal().length;
+    let ok = false;
+    if (mate && (st.goal === 'mate' || st.goal === 'line')) ok = true;
+    else if (st.goal === 'check') ok = S.pos.inCheck();
+    else if (st.goal === 'castle') ok = m.fl === 3 || m.fl === 4;
+    else if (st.goal === 'promote') ok = !!m.promo;
+    else if (st.goal === 'ep') ok = m.fl === 2;
+    else if (st.goal === 'accept') ok = st.accept.includes(u);
+    else if (st.goal === 'line') ok = u === st.solution[S.solIdx] || u + 'q' === st.solution[S.solIdx];
+    if (!ok) {
+      S.wrong++;
+      let why = (st.wrong && st.wrong[u]) || '';
+      if (!why && stale) why = '<b>Hòa pat!</b> Vua đen không bị chiếu nhưng không còn nước đi nào: ván cờ hòa. Hãy tìm nước chiếu hết.';
+      if (!why && st.goal === 'mate' && S.pos.inCheck()) why = 'Đó là nước chiếu, nhưng Vua đen vẫn còn đường thoát.';
+      if (!why && st.goal === 'castle' && m.p === 'K') why = 'Để nhập thành, Vua đi <b>2 ô</b> sang ngang về phía Xe.';
+      if (!why && st.goal === 'ep') why = 'Hãy dùng Tốt e5 ăn chéo sang ô d6 (ô mà Tốt đen vừa đi qua).';
+      if (!why) why = 'Nước này chưa giải được bài. Thử lại nhé!';
+      if (S.wrong >= 2 && st.hint) why += `<br><span class="sub">Gợi ý: ${esc(st.hint)}</span>`;
+      push({ kind: 'no', title: `${esc(E.moveText(m))}`, body: why });
+      S.busy = true; render();
+      later(() => { S.pos.unmake(); S.keys.pop(); S.hist.pop(); S.lastMove = st.lastMove ? [E.sqIdx(st.lastMove[0]), E.sqIdx(st.lastMove[1])] : null; S.busy = false; render(); }, 900);
+      return;
+    }
+    const finished = mate || st.goal !== 'line' || S.solIdx + 1 >= st.solution.length;
+    if (finished) {
+      markDone(); S.celebrate = true;
+      const reasons = E.explain(pre, m);
+      push({ kind: 'win', label: 'Chính xác', title: esc(E.moveText(m)), body: `${esc(st.success || 'Giải đúng rồi!')}${reasons.length && !mate ? `<ul class="why">${reasons.slice(0, 2).map((r) => `<li>${esc(r)}</li>`).join('')}</ul>` : ''}` });
+      render();
+      return;
+    }
+    S.solIdx++;
+    push({ kind: 'ok', title: esc(E.moveText(m)), body: esc(E.explain(pre, m)[0] || 'Đúng hướng!') + ' Giờ chờ đen đáp lại…' });
+    S.busy = true; S.status = 'Đen đang suy nghĩ…'; render();
+    later(() => {
+      const reply = st.solution[S.solIdx] ? S.pos.find(st.solution[S.solIdx]) : (E.think(S.pos, { maxDepth: 3, timeMs: 500 }) || {}).move;
+      if (reply) { applyMove(reply); push({ kind: 'bot', title: esc(E.moveText(reply)), body: 'Đến lượt bạn: hoàn thành đòn đánh!' }); }
+      S.solIdx++;
+      S.busy = false; S.status = ''; S.hintStage = 0; render();
+    }, 650);
+  }
+
+  /* ---------- games with the coach ---------- */
+  function analysisFor(pos) {
+    const key = pos.key();
+    if (S.analysis && S.analysis.key === key) return S.analysis;
+    const few = pos.b.filter(Boolean).length <= 7;
+    const r = E.think(pos, { maxDepth: few ? 8 : 5, timeMs: few ? 650 : 700, avoid: new Set(S.keys.slice(0, -1)) });
+    if (!r) return null;
+    let best = r.move, score = r.score;
+    // in the opening, prefer a "principled" move if it is about as good
+    if (pos.full <= 10 && S.step.fen.startsWith('rnbqkbnr/pppppppp')) {
+      const pr = principled(pos);
+      let top = null;
+      for (const m of pr.slice(0, 4)) {
+        if (m.from === best.from && m.to === best.to) { top = null; break; }
+        const sc = E.scoreMove(pos, m, Math.min(r.depth, 4), 400);
+        if (sc != null && sc >= score - 25 && (!top || sc > top.sc)) top = { m, sc };
+      }
+      if (top) { best = top.m; score = Math.min(score, top.sc); }
+    }
+    S.analysis = { key, best, score, depth: r.depth };
+    return S.analysis;
+  }
+  function principled(pos) {
+    const out = [];
+    for (const m of pos.legal()) {
+      let pri = 0;
+      const t = m.p.toLowerCase();
+      if (m.fl === 3) pri = 5;
+      else if (t === 'p' && (m.to === E.sqIdx('e4') || m.to === E.sqIdx('d4'))) pri = 4;
+      else if (t === 'n' && (m.from >> 3) === 7 && [E.sqIdx('f3'), E.sqIdx('c3')].includes(m.to)) pri = 3;
+      else if (t === 'b' && (m.from >> 3) === 7 && [E.sqIdx('c4'), E.sqIdx('b5'), E.sqIdx('e2'), E.sqIdx('d3'), E.sqIdx('f4'), E.sqIdx('g5'), E.sqIdx('e3')].includes(m.to)) pri = 2;
+      if (pri) out.push({ m, pri });
+    }
+    return out.sort((a, b) => b.pri - a.pri).map((x) => x.m);
+  }
+  function whiteScore(score) { return score; } // analysis is computed with white to move
+  function showHint(a, withThreats) {
+    if (!a) return;
+    S.arrows = [[a.best.from, a.best.to, 'hint']];
+    const reasons = E.explain(S.pos, a.best);
+    let body = `<ul class="why">${reasons.slice(0, 3).map((r) => `<li>${esc(r)}</li>`).join('')}</ul>`;
+    if (Math.abs(a.score) > E.MATE - 1000 && a.score > 0) body += `<p class="sub">Bạn có thể chiếu hết trong ${Math.ceil((E.MATE - a.score) / 2)} nước!</p>`;
+    push({ kind: 'hint', title: `Nên đi: ${mv(a.best)}`, body });
+  }
+  function threatNote() {
+    const th = E.threatsAgainst(S.pos, 'w');
+    if (!th.length) return '';
+    const t = th[0];
+    return `${NAMEP(t.piece)} của bạn ở <b>${E.sqName(t.sq)}</b> đang bị ${esc(NAMEP(t.byPiece))} ${E.sqName(t.by)} tấn công${S.pos.attacked(t.sq, 'w') ? ' (quân tấn công rẻ hơn)' : ' và không được bảo vệ'}.`;
+  }
+  // called when it is white's turn in a game
+  function coachTurn(botMoveDone) {
+    const auto = S.step.coach === 'auto';
+    S.busy = true; S.status = auto ? 'Huấn luyện viên đang xem thế cờ…' : '';
+    render();
+    later(() => {
+      let a = null;
+      if (auto) a = analysisFor(S.pos);
+      if (a) S.evalScore = whiteScore(a.score);
+      const warn = threatNote();
+      if (botMoveDone) {
+        const body = [];
+        if (botMoveDone.cap) body.push(`Đen đã ăn ${NAMEP(botMoveDone.cap)} của bạn ở ${E.sqName(botMoveDone.to)}.`);
+        if (S.pos.inCheck('w')) body.push('<b>Bạn đang bị chiếu!</b> Phải thoát chiếu: chạy Vua, chặn, hoặc ăn quân chiếu.');
+        if (warn && (auto || S.step.coach === 'ask')) body.push(auto ? warn : 'Hãy kiểm tra xem quân nào của bạn đang bị đe dọa.');
+        push({ kind: 'bot', title: mv(botMoveDone), body: body.join(' ') || (auto ? 'Đến lượt bạn.' : '') });
+      } else if (warn && auto) push({ kind: 'warn', body: warn });
+      if (auto && a) showHint(a);
+      S.busy = false; S.status = '';
+      render();
+    }, 40);
+  }
+  function gameMove(m) {
+    const pre = S.pos.clone();
+    const preKeys = S.keys.slice();
+    applyMove(m);
+    S.busy = true; S.status = 'Huấn luyện viên đang chấm nước đi…';
+    render();
+    later(() => {
+      // evaluate the user's move
+      let rating = null;
+      const a = S.step.coach === 'auto' && S.analysis && S.analysis.key === pre.key() ? S.analysis : (() => {
+        const keep = S.keys; S.keys = preKeys; const savePos = S.pos; S.pos = pre; S.analysis = null;
+        const r = analysisFor(pre); S.pos = savePos; S.keys = keep; return r;
+      })();
+      const goalDone = checkGoal(m);
+      if (a && !goalDone) {
+        const same = a.best.from === m.from && a.best.to === m.to && a.best.promo === m.promo;
+        const us = same ? a.score : E.scoreMove(pre, m, a.depth, 1500);
+        if (us != null) {
+          const clamp = (x) => Math.abs(x) > E.MATE - 1000 ? (x > 0 ? 5000 + x / 1000 : -5000 + x / 1000) : Math.max(-3000, Math.min(3000, x));
+          const diff = clamp(a.score) - clamp(us);
+          rating = same || diff <= 15 ? 'best' : diff <= 50 ? 'good' : diff <= 140 ? 'inacc' : 'blunder';
+          if (a.score > E.MATE - 1000 && us < E.MATE - 1000 && rating !== 'best') rating = diff > 140 ? 'blunder' : 'inacc';
+          S.evalScore = us;
+          const reasons = E.explain(pre, m);
+          let body = '';
+          if (rating === 'best' || rating === 'good') {
+            body = `<ul class="why">${reasons.slice(0, 2).map((r) => `<li>${esc(r)}</li>`).join('')}</ul>`;
+          } else {
+            const better = E.explain(pre, a.best);
+            body = `<p>Tốt hơn là ${mv(a.best)}: ${esc(better[0] || '')}</p>`;
+            if (rating === 'blunder') {
+              const ref = E.think(S.pos, { maxDepth: 3, timeMs: 400 });
+              if (ref) {
+                const rm = ref.move;
+                let r;
+                if (ref.score > E.MATE - 1000) r = `Đen có thể chiếu hết bạn, bắt đầu bằng ${mv(rm)}.`;
+                else if (rm.cap) r = `Đen có thể đáp ${mv(rm)} và ăn ${NAMEP(rm.cap)} của bạn.`;
+                else r = `Đen có nước đáp mạnh: ${mv(rm)}.`;
+                body += `<p>${r}</p>`;
+              }
+            }
+          }
+          push({ kind: rating, title: mv(m), body, actions: rating === 'blunder' || rating === 'inacc' ? [{ label: 'Đi lại nước này', fn: undo, cls: 'primary' }] : null });
+        }
+      }
+      if (endCheck()) return;
+      // bot's turn
+      S.status = 'Đen đang suy nghĩ…'; render();
+      later(() => {
+        const t0 = Date.now();
+        const bm = E.botMove(S.pos, S.step.bot || { depth: 2 });
+        const wait = Math.max(0, 450 - (Date.now() - t0));
+        later(() => {
+          if (!bm) { endCheck(); return; }
+          applyMove(bm);
+          S.analysis = null;
+          if (endCheck(bm)) return;
+          coachTurn(bm);
+        }, wait);
+      }, 60);
+    }, 40);
+  }
+  function checkGoal(m) {
+    if (S.step.goal === 'promote' && m.promo) return true;
+    return false;
+  }
+  // returns true if the game ended
+  function endCheck(lastBot) {
+    const last = S.hist[S.hist.length - 1];
+    const goal = S.step.goal;
+    let res = null;
+    if (goal === 'promote' && last && last.m.promo) {
+      res = S.pos.turn === 'b' ? { result: 'white', reason: 'promote' } : { result: 'black', reason: 'promote' };
+    }
+    if (!res) {
+      const st = E.gameStatus(S.pos, S.keys);
+      if (st.over) res = st;
+    }
+    if (!res) { S.busy = false; S.status = ''; if (!lastBot) render(); return false; }
+    S.over = true; S.busy = false; S.status = ''; S.arrows = [];
+    const again = [{ label: S.step.type === 'game' ? 'Chơi lại' : 'Làm lại', fn: reset }];
+    if (res.result === 'white') {
+      markDone(); S.celebrate = true;
+      S.evalScore = E.MATE;
+      const how = res.reason === 'promote' ? 'Tốt của bạn đã về đích trước!' : 'Chiếu hết! Vua đen không còn đường thoát.';
+      push({ kind: 'win', label: 'Bạn thắng', title: how, body: `Ván cờ kéo dài ${Math.ceil(S.hist.length / 2)} nước${S.hintsUsed ? `, dùng ${S.hintsUsed} lần gợi ý` : ''}. Bấm <b>"${SI < LV.steps.length - 1 ? 'Bài tiếp theo' : 'Sang cấp tiếp'}"</b> để tiếp tục.` });
+    } else if (res.result === 'black') {
+      S.evalScore = -E.MATE;
+      push({ kind: 'lose', label: 'Bạn thua', title: res.reason === 'promote' ? 'Đen đã phong cấp trước.' : 'Vua trắng bị chiếu hết.', body: 'Đừng nản! Bấm "Đi lại" để xem lại vài nước trước, hoặc chơi ván mới. Bấm "Gợi ý" khi chưa chắc chắn.', actions: [{ label: 'Đi lại', fn: undo, cls: 'primary' }].concat(again) });
+    } else {
+      S.evalScore = 0;
+      const why = { stalemate: 'Hòa pat: bên đến lượt không bị chiếu nhưng hết nước đi.', material: 'Không đủ quân để chiếu hết.', fifty: '50 nước không ăn quân và không đi Tốt.', repetition: 'Thế cờ lặp lại 3 lần.' }[res.reason] || '';
+      push({ kind: 'draw', label: 'Hòa', title: why, body: goal === 'win' || goal === 'mate' ? 'Gần thắng rồi! Hãy thử lại và tránh để hòa.' : '', actions: [{ label: 'Đi lại', fn: undo, cls: 'primary' }].concat(again) });
+    }
+    render();
+    return true;
+  }
+  function undo() {
+    if (!S || S.busy || S.step.type !== 'game' || !S.hist.length) return;
+    let n = S.pos.turn === 'w' ? 2 : 1;
+    if (S.hist.length < n) n = S.hist.length;
+    for (let i = 0; i < n; i++) { S.pos.unmake(); S.keys.pop(); S.hist.pop(); }
+    if (S.pos.turn !== 'w' && S.hist.length) { S.pos.unmake(); S.keys.pop(); S.hist.pop(); }
+    const lm = S.hist[S.hist.length - 1];
+    S.lastMove = lm ? [lm.m.from, lm.m.to] : null;
+    S.over = false; S.celebrate = false; S.arrows = []; S.analysis = null; S.selected = -1;
+    push({ kind: 'info', title: 'Đã đi lại', body: 'Thế cờ đã quay về trước nước đi của bạn. Hãy suy nghĩ kỹ hơn nhé.' });
+    if (S.step.coach === 'auto') coachTurn(null); else render();
+  }
+  function reset() { openStep(LV.id, SI, true); }
+  function hint() {
+    if (!S || S.busy) return;
+    const st = S.step;
+    if (st.type === 'stars') {
+      push({ kind: 'hint', title: 'Gợi ý', body: esc(st.hint || 'Hãy nhớ lại cách đi của quân này.') });
+      render(); return;
+    }
+    if (st.type === 'puzzle') {
+      S.hintStage++;
+      const target = st.goal === 'line' ? st.solution[S.solIdx] : st.hintMove;
+      if (S.hintStage === 1 && st.hint) push({ kind: 'hint', title: 'Gợi ý', body: esc(st.hint) });
+      else if (target) {
+        const m = S.pos.find(target);
+        if (m) { S.arrows = [[m.from, m.to, 'hint']]; push({ kind: 'hint', title: `Đáp án: ${mv(m)}`, body: 'Mũi tên vàng chỉ nước đi đúng. Hãy đi thử!' }); }
+      }
+      render(); return;
+    }
+    if (st.type === 'game' && !S.over) {
+      S.busy = true; S.status = 'Huấn luyện viên đang tính toán…'; render();
+      later(() => {
+        const a = analysisFor(S.pos);
+        S.hintsUsed++;
+        if (a) { S.evalScore = a.score; showHint(a); }
+        S.busy = false; S.status = ''; render();
+      }, 40);
+    }
+  }
+
+  /* ---------- pointer input ---------- */
+  function sqFromPoint(x, y) {
+    const r = $('#board').getBoundingClientRect();
+    if (x < r.left || y < r.top || x >= r.right || y >= r.bottom) return -1;
+    const c = Math.floor(((x - r.left) / r.width) * 8), rr = Math.floor(((y - r.top) / r.height) * 8);
+    return rr * 8 + c;
+  }
+  function onDown(e) {
+    if (!S || !interactive()) return;
+    const sq = sqFromPoint(e.clientX, e.clientY);
+    if (sq < 0) return;
+    if (S.selected >= 0 && S.selected !== sq && tryMove(S.selected, sq)) { e.preventDefault(); return; }
+    const own = legalFrom(sq);
+    if (S.pos.b[sq] && E.colorOf(S.pos.b[sq]) === 'w') {
+      if (S.step.only && S.pos.b[sq] !== S.step.only) { S.selected = -1; renderBoard(); return; }
+      e.preventDefault();
+      const wasSel = S.selected === sq;
+      S.selected = sq;
+      drag = { from: sq, x: e.clientX, y: e.clientY, moved: false, wasSel, id: e.pointerId };
+      try { $('#board').setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+      if (!own.length && S.step.type !== 'info') { /* no moves */ }
+      renderBoard();
+    } else { S.selected = -1; renderBoard(); }
+  }
+  function onMove(e) {
+    if (!drag) return;
+    const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (!drag.moved && Math.hypot(dx, dy) < 6) return;
+    let g = $('#ghost');
+    if (!drag.moved) {
+      drag.moved = true;
+      const size = $('#board').getBoundingClientRect().width / 8;
+      g.style.width = g.style.height = size + 'px';
+      g.innerHTML = pieceHTML(S.pos.b[drag.from]);
+      g.hidden = false;
+      renderBoard();
+    }
+    g.style.transform = `translate(${e.clientX - g.offsetWidth / 2}px, ${e.clientY - g.offsetHeight / 2}px)`;
+  }
+  function onUp(e) {
+    if (!drag) return;
+    const d = drag; drag = null;
+    $('#ghost').hidden = true;
+    const sq = sqFromPoint(e.clientX, e.clientY);
+    if (d.moved) {
+      if (sq >= 0 && sq !== d.from && tryMove(d.from, sq)) return;
+      renderBoard(); return;
+    }
+    if (d.wasSel && sq === d.from) { S.selected = -1; renderBoard(); }
+  }
+
+  /* ---------- wiring ---------- */
+  function wire() {
+    const board = $('#board');
+    board.addEventListener('pointerdown', onDown);
+    board.addEventListener('pointermove', onMove);
+    board.addEventListener('pointerup', onUp);
+    board.addEventListener('pointercancel', () => { drag = null; $('#ghost').hidden = true; if (S) renderBoard(); });
+    document.addEventListener('click', (e) => {
+      const lv = e.target.closest('[data-lv]');
+      if (lv) { const id = +lv.dataset.lv; const L = LEVELS.find((x) => x.id === id); const first = L.steps.findIndex((_, i) => !isDone(id, i)); openStep(id, first < 0 ? 0 : first); return; }
+      const si = e.target.closest('[data-si]');
+      if (si) { openStep(LV.id, +si.dataset.si); return; }
+      const act = e.target.closest('[data-act]');
+      if (act && S && S.feed[0] && S.feed[0].actions) { S.feed[0].actions[+act.dataset.act].fn(); return; }
+      const id = e.target.closest('button') && e.target.closest('button').id;
+      if (id === 'b-next') nextStep();
+      else if (id === 'b-hint') hint();
+      else if (id === 'b-undo') undo();
+      else if (id === 'b-reset') reset();
+      else if (id === 'b-home' || id === 'brand') goHome();
+      else if (id === 'resume') { const [a, b] = e.target.dataset.go.split('-').map(Number); openStep(a, b); }
+      else if (id === 'b-resetall') {
+        const c = $('#confirmreset'); c.hidden = false;
+      } else if (id === 'b-resetyes') { progress = {}; saveProgress(); $('#confirmreset').hidden = true; render(); }
+      else if (id === 'b-resetno') { $('#confirmreset').hidden = true; }
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.target.classList && e.target.classList.contains('lvcard')) e.target.click();
+    });
+    window.addEventListener('hashchange', fromHash);
+  }
+
+  function start() {
+    wire();
+    fromHash();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+
+</script>
+
+</body>
+</html>

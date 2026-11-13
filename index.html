@@ -187,7 +187,7 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
 .board.named .pc { font-size: 7.4cqi; align-items: start; padding-top: 8%; }
 .board.named .pc i { transform: none; }
 .pl { display: none; }
-@media (max-width: 520px) {
+@container (max-width: 470px) {
   .pnm b { display: none; } .pnm { padding: 1px 3px; }
   .pl { display: block; position: absolute; top: 3%; right: 4%; z-index: 3; font-size: 9px; font-weight: 800; line-height: 1; padding: 2px 3px; border-radius: 3px; pointer-events: none; }
   .pl.w { background: #18212B; color: #fff; } .pl.b { background: #fff; color: #18212B; box-shadow: 0 0 0 1px rgba(24,33,43,.4); }
@@ -284,6 +284,71 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   .steptitle { font-size: 19px; }
 }
 @media (max-width: 420px) { .step .sk { display: none; } .evalbar { width: 10px; } }
+/* ---------- phone held upright: board on top, tabs below, buttons pinned to the bottom ---------- */
+.mtitle, .mtabs { display: none; }
+.phone .lesson { grid-template-columns: minmax(0, 1fr); gap: 10px; padding-bottom: calc(74px + env(safe-area-inset-bottom, 0px)); }
+.phone .wrap { padding-block: 8px 16px; }
+/* lesson list becomes a dropdown opened from the title row */
+.phone .rail, .land .rail { display: none; }
+.phone .rail.open, .land .rail.open { display: block; position: fixed; z-index: 40; top: calc(env(safe-area-inset-top, 0px) + 60px); left: max(10px, env(safe-area-inset-left, 0px)); right: max(10px, env(safe-area-inset-right, 0px)); max-height: 70dvh; overflow-y: auto; background: var(--panel); border: 1px solid var(--line); border-radius: 14px; box-shadow: 0 12px 40px rgba(0, 0, 0, .28); padding: 10px; }
+.phone .rail.open .lvt, .land .rail.open .lvt { display: block; margin: 2px 6px 8px; }
+.phone .rail.open .steps, .land .rail.open .steps { flex-direction: column; overflow: visible; }
+.phone .rail.open .step, .land .rail.open .step { max-width: none; flex: auto; }
+.phone .rail.open .step .sk, .land .rail.open .step .sk { display: block; }
+.phone .center { gap: 8px; }
+.phone .mtitle, .land .mtitle { display: flex; align-items: center; gap: 8px; width: 100%; min-width: 0; }
+.mstep { display: flex; align-items: baseline; gap: 7px; min-width: 0; flex: 1; border: 1px solid var(--line); background: var(--panel); border-radius: 10px; padding: 6px 10px; text-align: left; }
+.mstep small { flex: none; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .05em; color: var(--accent); }
+.mstep .mt { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; font-family: var(--f-display); font-weight: 600; font-size: 15px; }
+.mstep .car { flex: none; margin-left: auto; color: var(--muted); font-size: 12px; transition: transform .15s; }
+.mstep[aria-expanded="true"] .car { transform: rotate(180deg); }
+.mtgl { display: flex; flex: none; }
+.phone .mtgl .toggles { gap: 5px; flex-wrap: nowrap; }
+.phone .mtgl .tgl { flex-direction: column; gap: 2px; padding: 4px 6px; border-radius: 10px; font-size: 10.5px; line-height: 1.1; }
+.phone .mtgl .tgl .sw { width: 26px; height: 15px; }
+.phone .mtgl .tgl .sw::after { width: 11px; height: 11px; }
+.phone .mtgl .tgl[aria-pressed="true"] .sw::after { transform: translateX(11px); }
+.phone .boardwrap, .phone .under { width: 100%; min-width: 0; }
+.phone .boardwrap { gap: 6px; }
+.phone .evalbar { width: 10px; }
+.phone .under { padding-left: 0; }
+.phone .tgl { padding: 4px 10px 4px 5px; font-size: 13px; }
+.phone .coach { gap: 8px; }
+.mtab { white-space: nowrap; }
+.phone .mtabs { display: flex; gap: 4px; padding: 4px; background: var(--panel2); border: 1px solid var(--line); border-radius: 12px; position: sticky; top: calc(env(safe-area-inset-top, 0px) + 55px); z-index: 6; }
+.mtab { flex: 1; position: relative; border: 0; background: none; border-radius: 9px; padding: 9px 4px; font-size: 13.5px; font-weight: 600; color: var(--muted); }
+.mtab[aria-selected="true"] { background: var(--panel); color: var(--ink); box-shadow: var(--shadow); }
+.mtab .bd { position: absolute; top: 3px; right: 6px; min-width: 17px; height: 17px; border-radius: 9px; background: var(--accent-btn); color: var(--accent-ink); font-size: 11px; line-height: 17px; padding: 0 4px; }
+.phone .coach[data-tab="guide"] .c-coach { display: none; }
+.phone .coach:not([data-tab="guide"]) .c-guide { padding: 0; border: 0; background: none; }
+.phone .coach:not([data-tab="guide"]) .c-guide > :not(.controls) { display: none; }
+.phone .coach:not([data-tab="coach"]) .coachhead, .phone .coach:not([data-tab="coach"]) .feed { display: none; }
+.phone .coach:not([data-tab="moves"]) .moves, .phone .coach:not([data-tab="moves"]) .legend { display: none; }
+.phone .coach[data-tab="moves"] .moves { margin-top: 0; border-top: 0; padding-top: 0; max-height: none; }
+.phone .coach[data-tab="moves"] .moves:not([hidden]) + .legend { border-top: 1px solid var(--line); }
+.phone .coach[data-tab="moves"] .moves[hidden] + .legend { margin-top: 0; border-top: 0; padding-top: 0; }
+.phone .feed { max-height: none; }
+.phone .coach[data-tab="coach"] .coachhead { display: none; }
+.phone .c-coach { padding: 12px; }
+.phone .mtab { padding: 7px 4px; }
+.phone .mtabs { top: calc(env(safe-area-inset-top, 0px) + 52px); }
+.phone .steptitle { font-size: 19px; }
+.phone .controls { position: fixed; left: 0; right: 0; bottom: 0; z-index: 25; margin: 0; flex-wrap: nowrap; gap: 6px; background: var(--panel); border-top: 1px solid var(--line); box-shadow: 0 -4px 16px rgba(23, 33, 44, .08); padding-top: 8px; padding-bottom: calc(8px + env(safe-area-inset-bottom, 0px)); padding-left: max(10px, env(safe-area-inset-left, 0px)); padding-right: max(10px, env(safe-area-inset-right, 0px)); }
+.phone .controls .btn { flex: 1 1 0; min-width: 0; padding: 11px 4px; font-size: 13.5px; line-height: 1.2; white-space: normal; }
+.phone .controls #b-next { margin-left: 0; }
+.phone .controls .btn.ghost { color: var(--ink); }
+
+/* ---------- phone turned sideways: board left, coach right ---------- */
+.land .top { position: static; }
+.land .topin { padding-block: 6px; }
+.land .wrap { padding-block: 8px 20px; }
+.land .lesson { grid-template-columns: auto minmax(0, 1fr); gap: 16px; }
+.land .center { gap: 8px; }
+.land .center { position: sticky; top: 8px; align-self: start; }
+.land .mtitle, .land .boardwrap, .land .under { width: calc(100dvh - 104px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px)); min-width: 220px; }
+.land .under { padding-left: 0; }
+.land .feed { max-height: none; }
+
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
 </style>
 
@@ -315,8 +380,9 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
   </section>
 
   <section id="lesson" class="lesson" hidden>
-    <aside class="rail"><div class="lvt" id="lvtitle"></div><div class="steps" id="steps"></div></aside>
+    <aside class="rail" id="rail"><div class="lvt" id="lvtitle"></div><div class="steps" id="steps"></div></aside>
     <div class="center">
+      <div class="mtitle" id="mtitle"><button class="mstep" id="mstep" aria-expanded="false" aria-controls="rail"></button><div class="mtgl" id="mtoggleslot"></div></div>
       <div class="boardwrap" id="boardwrap">
         <div class="evalbar" id="evalbar"><div id="evalfill"></div><span id="evaltxt">0.0</span></div>
         <div class="boardbox"><div class="board" id="board" aria-label="Bàn cờ"></div><div class="promo" id="promo" hidden></div></div>
@@ -329,14 +395,15 @@ body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-a
         <div class="status" id="status" hidden></div>
       </div>
     </div>
-    <div class="coach">
-      <div class="card">
+    <div class="coach" id="coachcol" data-tab="guide">
+      <div class="mtabs" id="mtabs" role="tablist" aria-label="Bảng bên dưới bàn cờ"></div>
+      <div class="card c-guide">
         <div class="stepkind" id="stepkind"></div>
         <h2 class="steptitle" id="steptitle"></h2>
         <div class="steptext" id="steptext"></div>
         <div class="controls" id="controls"></div>
       </div>
-      <div class="card">
+      <div class="card c-coach">
         <div class="coachhead"><span class="av">♚</span><div><b>Huấn luyện viên</b><span>Nhận xét mới nhất ở trên cùng</span></div></div>
         <div class="feed" id="feed" aria-live="polite"></div>
         <div class="moves" id="moves" hidden></div>
@@ -1145,7 +1212,31 @@ if (typeof module !== 'undefined') module.exports = LEVELS;
     if (S.step.only && p !== S.step.only) return [];
     return S.pos.legal().filter((m) => m.from === sq);
   }
-  function push(item) { S.feed.unshift(item); if (S.feed.length > 40) S.feed.length = 40; }
+  function push(item) {
+    S.feed.unshift(item); if (S.feed.length > 40) S.feed.length = 40;
+    // on a phone: once the learner is playing, jump to the coach tab; before that just count unread
+    if (S.acted) { mtab = 'coach'; unread = 0; } else unread++;
+  }
+
+  /* ---------- phone / tablet layout ---------- */
+  let mtab = 'guide', unread = 0;
+  const mqPhone = window.matchMedia('(max-width: 760px), (pointer: coarse) and (orientation: portrait) and (max-width: 1100px)');
+  const mqLand = window.matchMedia('(orientation: landscape) and (max-height: 520px)');
+  function applyLayout() {
+    const land = mqLand.matches, root = document.documentElement;
+    root.classList.toggle('land', land);
+    root.classList.toggle('phone', !land && mqPhone.matches);
+    // on an upright phone the two switches sit beside the lesson title, saving a row
+    const tg = $('.toggles');
+    if (tg) (root.classList.contains('phone') ? $('#mtoggleslot') : $('.under')).prepend(tg);
+  }
+  const isPhone = () => document.documentElement.classList.contains('phone');
+  function renderTabs() {
+    const third = S.step.type === 'game' ? 'Nước đi' : 'Cách đọc';
+    $('#mtabs').innerHTML = [['guide', 'Hướng dẫn'], ['coach', 'Nhận xét'], ['moves', third]].map(([k, l]) =>
+      `<button class="mtab" role="tab" data-mtab="${k}" aria-selected="${mtab === k}">${l}${k === 'coach' && unread && mtab !== 'coach' ? `<span class="bd">${unread}</span>` : ''}</button>`).join('');
+    $('#coachcol').dataset.tab = mtab;
+  }
 
   /* ---------- rendering ---------- */
   function render() {
@@ -1199,15 +1290,18 @@ if (typeof module !== 'undefined') module.exports = LEVELS;
     renderFeed();
     renderMoves();
     renderEval();
+    $('#mstep').innerHTML = `<small>Bài ${SI + 1}/${LV.steps.length}</small><span class="mt">${esc(st.title)}</span><span class="car" aria-hidden="true">▼</span>`;
+    renderTabs();
   }
   function renderControls() {
     const st = S.step, t = st.type;
     const btn = (id, label, cls, show, dis) => show ? `<button id="${id}" class="btn ${cls || ''}"${dis ? ' disabled' : ''}>${label}</button>` : '';
     const last = SI >= LV.steps.length - 1;
-    const nextLabel = last ? (LV.id < 6 ? `Sang cấp ${LV.id + 1} →` : 'Về trang chủ') : 'Bài tiếp theo →';
+    const ph = isPhone();
+    const nextLabel = last ? (LV.id < 6 ? `Sang cấp ${LV.id + 1} →` : 'Về trang chủ') : ph ? 'Bài tiếp →' : 'Bài tiếp theo →';
     $('#controls').innerHTML =
       (t === 'info' ? btn('b-next', 'Tiếp tục →', 'primary', true) : '') +
-      btn('b-hint', t === 'game' ? 'Gợi ý nước đi' : 'Gợi ý', 'hint', t !== 'info', S.busy || S.over || S.done && t !== 'game') +
+      btn('b-hint', t === 'game' && !ph ? 'Gợi ý nước đi' : 'Gợi ý', 'hint', t !== 'info', S.busy || S.over || S.done && t !== 'game') +
       btn('b-undo', 'Đi lại', '', t === 'game', S.busy || S.hist.length < 1) +
       btn('b-reset', t === 'game' ? 'Ván mới' : 'Làm lại', '', t !== 'info', S.busy) +
       (t !== 'info' ? btn('b-next', nextLabel, S.done ? 'primary' : 'ghost', true) : '');
@@ -1313,6 +1407,8 @@ if (typeof module !== 'undefined') module.exports = LEVELS;
     S = newSession(LV.steps[SI]);
     S._lv = lv;
     if (lvChanged) $('#legend').open = LV.id <= 3;
+    mtab = 'guide'; unread = 0;
+    $('#rail').classList.remove('open'); $('#mstep').setAttribute('aria-expanded', 'false');
     view = 'lesson';
     if (!noHash) setHash(`cap${LV.id}-bai${SI + 1}`);
     render();
@@ -1365,6 +1461,7 @@ if (typeof module !== 'undefined') module.exports = LEVELS;
     S.lastMove = [m.from, m.to];
   }
   function userMove(m) {
+    S.acted = true;
     S.arrows = [];
     const t = S.step.type;
     if (t === 'stars') return starsMove(m);
@@ -1627,6 +1724,7 @@ if (typeof module !== 'undefined') module.exports = LEVELS;
   function reset() { openStep(LV.id, SI, true); }
   function hint() {
     if (!S || S.busy) return;
+    S.acted = true;
     const st = S.step;
     if (st.type === 'stars') {
       push({ kind: 'hint', title: 'Gợi ý', body: esc(st.hint || 'Hãy nhớ lại cách đi của quân này.') });
@@ -1716,6 +1814,11 @@ if (typeof module !== 'undefined') module.exports = LEVELS;
       if (lv) { const id = +lv.dataset.lv; const L = LEVELS.find((x) => x.id === id); const first = L.steps.findIndex((_, i) => !isDone(id, i)); openStep(id, first < 0 ? 0 : first); return; }
       const si = e.target.closest('[data-si]');
       if (si) { openStep(LV.id, +si.dataset.si); return; }
+      const rail = $('#rail');
+      if (e.target.closest('#mstep')) { const o = rail.classList.toggle('open'); $('#mstep').setAttribute('aria-expanded', o ? 'true' : 'false'); return; }
+      if (rail.classList.contains('open') && !e.target.closest('#rail')) { rail.classList.remove('open'); $('#mstep').setAttribute('aria-expanded', 'false'); }
+      const mt = e.target.closest('[data-mtab]');
+      if (mt) { mtab = mt.dataset.mtab; if (mtab === 'coach') unread = 0; if (mtab === 'moves') $('#legend').open = true; renderTabs(); return; }
       const act = e.target.closest('[data-act]');
       if (act && S && S.feed[0] && S.feed[0].actions) { S.feed[0].actions[+act.dataset.act].fn(); return; }
       const id = e.target.closest('button') && e.target.closest('button').id;
@@ -1755,6 +1858,9 @@ if (typeof module !== 'undefined') module.exports = LEVELS;
   }
 
   function start() {
+    applyLayout();
+    const relayout = () => { applyLayout(); if (view === 'lesson' && S) render(); };
+    for (const mq of [mqPhone, mqLand]) { if (mq.addEventListener) mq.addEventListener('change', relayout); else mq.addListener(relayout); }
     wire();
     fromHash();
   }

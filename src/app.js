@@ -93,7 +93,31 @@
     if (S.step.only && p !== S.step.only) return [];
     return S.pos.legal().filter((m) => m.from === sq);
   }
-  function push(item) { S.feed.unshift(item); if (S.feed.length > 40) S.feed.length = 40; }
+  function push(item) {
+    S.feed.unshift(item); if (S.feed.length > 40) S.feed.length = 40;
+    // on a phone: once the learner is playing, jump to the coach tab; before that just count unread
+    if (S.acted) { mtab = 'coach'; unread = 0; } else unread++;
+  }
+
+  /* ---------- phone / tablet layout ---------- */
+  let mtab = 'guide', unread = 0;
+  const mqPhone = window.matchMedia('(max-width: 760px), (pointer: coarse) and (orientation: portrait) and (max-width: 1100px)');
+  const mqLand = window.matchMedia('(orientation: landscape) and (max-height: 520px)');
+  function applyLayout() {
+    const land = mqLand.matches, root = document.documentElement;
+    root.classList.toggle('land', land);
+    root.classList.toggle('phone', !land && mqPhone.matches);
+    // on an upright phone the two switches sit beside the lesson title, saving a row
+    const tg = $('.toggles');
+    if (tg) (root.classList.contains('phone') ? $('#mtoggleslot') : $('.under')).prepend(tg);
+  }
+  const isPhone = () => document.documentElement.classList.contains('phone');
+  function renderTabs() {
+    const third = S.step.type === 'game' ? 'Nước đi' : 'Cách đọc';
+    $('#mtabs').innerHTML = [['guide', 'Hướng dẫn'], ['coach', 'Nhận xét'], ['moves', third]].map(([k, l]) =>
+      `<button class="mtab" role="tab" data-mtab="${k}" aria-selected="${mtab === k}">${l}${k === 'coach' && unread && mtab !== 'coach' ? `<span class="bd">${unread}</span>` : ''}</button>`).join('');
+    $('#coachcol').dataset.tab = mtab;
+  }
 
   /* ---------- rendering ---------- */
   function render() {
@@ -147,15 +171,18 @@
     renderFeed();
     renderMoves();
     renderEval();
+    $('#mstep').innerHTML = `<small>Bài ${SI + 1}/${LV.steps.length}</small><span class="mt">${esc(st.title)}</span><span class="car" aria-hidden="true">▼</span>`;
+    renderTabs();
   }
   function renderControls() {
     const st = S.step, t = st.type;
     const btn = (id, label, cls, show, dis) => show ? `<button id="${id}" class="btn ${cls || ''}"${dis ? ' disabled' : ''}>${label}</button>` : '';
     const last = SI >= LV.steps.length - 1;
-    const nextLabel = last ? (LV.id < 6 ? `Sang cấp ${LV.id + 1} →` : 'Về trang chủ') : 'Bài tiếp theo →';
+    const ph = isPhone();
+    const nextLabel = last ? (LV.id < 6 ? `Sang cấp ${LV.id + 1} →` : 'Về trang chủ') : ph ? 'Bài tiếp →' : 'Bài tiếp theo →';
     $('#controls').innerHTML =
       (t === 'info' ? btn('b-next', 'Tiếp tục →', 'primary', true) : '') +
-      btn('b-hint', t === 'game' ? 'Gợi ý nước đi' : 'Gợi ý', 'hint', t !== 'info', S.busy || S.over || S.done && t !== 'game') +
+      btn('b-hint', t === 'game' && !ph ? 'Gợi ý nước đi' : 'Gợi ý', 'hint', t !== 'info', S.busy || S.over || S.done && t !== 'game') +
       btn('b-undo', 'Đi lại', '', t === 'game', S.busy || S.hist.length < 1) +
       btn('b-reset', t === 'game' ? 'Ván mới' : 'Làm lại', '', t !== 'info', S.busy) +
       (t !== 'info' ? btn('b-next', nextLabel, S.done ? 'primary' : 'ghost', true) : '');
@@ -261,6 +288,8 @@
     S = newSession(LV.steps[SI]);
     S._lv = lv;
     if (lvChanged) $('#legend').open = LV.id <= 3;
+    mtab = 'guide'; unread = 0;
+    $('#rail').classList.remove('open'); $('#mstep').setAttribute('aria-expanded', 'false');
     view = 'lesson';
     if (!noHash) setHash(`cap${LV.id}-bai${SI + 1}`);
     render();
@@ -313,6 +342,7 @@
     S.lastMove = [m.from, m.to];
   }
   function userMove(m) {
+    S.acted = true;
     S.arrows = [];
     const t = S.step.type;
     if (t === 'stars') return starsMove(m);
@@ -575,6 +605,7 @@
   function reset() { openStep(LV.id, SI, true); }
   function hint() {
     if (!S || S.busy) return;
+    S.acted = true;
     const st = S.step;
     if (st.type === 'stars') {
       push({ kind: 'hint', title: 'Gợi ý', body: esc(st.hint || 'Hãy nhớ lại cách đi của quân này.') });
@@ -664,6 +695,11 @@
       if (lv) { const id = +lv.dataset.lv; const L = LEVELS.find((x) => x.id === id); const first = L.steps.findIndex((_, i) => !isDone(id, i)); openStep(id, first < 0 ? 0 : first); return; }
       const si = e.target.closest('[data-si]');
       if (si) { openStep(LV.id, +si.dataset.si); return; }
+      const rail = $('#rail');
+      if (e.target.closest('#mstep')) { const o = rail.classList.toggle('open'); $('#mstep').setAttribute('aria-expanded', o ? 'true' : 'false'); return; }
+      if (rail.classList.contains('open') && !e.target.closest('#rail')) { rail.classList.remove('open'); $('#mstep').setAttribute('aria-expanded', 'false'); }
+      const mt = e.target.closest('[data-mtab]');
+      if (mt) { mtab = mt.dataset.mtab; if (mtab === 'coach') unread = 0; if (mtab === 'moves') $('#legend').open = true; renderTabs(); return; }
       const act = e.target.closest('[data-act]');
       if (act && S && S.feed[0] && S.feed[0].actions) { S.feed[0].actions[+act.dataset.act].fn(); return; }
       const id = e.target.closest('button') && e.target.closest('button').id;
@@ -703,6 +739,9 @@
   }
 
   function start() {
+    applyLayout();
+    const relayout = () => { applyLayout(); if (view === 'lesson' && S) render(); };
+    for (const mq of [mqPhone, mqLand]) { if (mq.addEventListener) mq.addEventListener('change', relayout); else mq.addListener(relayout); }
     wire();
     fromHash();
   }
